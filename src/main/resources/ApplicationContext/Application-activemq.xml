@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/properties/#{systemEnvironment['YW_ENV']}/mysql.properties
+				</value>
+				<value>classpath:/properties/#{systemEnvironment['YW_ENV']}/jms.properties
+				</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+
+	<!-- 预取策略设置为 1 -->
+	<bean id="prefetchPolicy" class="org.apache.activemq.ActiveMQPrefetchPolicy">
+		<property name="queuePrefetch" value="1" />
+	</bean>
+
+
+	
+	<bean id="topicMQFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${topic.brokerUrl}" />
+	</bean>
+	<bean id="topicSpringFactory"
+		class="org.springframework.jms.connection.SingleConnectionFactory">
+		<property name="targetConnectionFactory" ref="topicMQFactory" />
+	</bean>
+	<bean id="topicJMSTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="topicSpringFactory" />
+		<property name="pubSubDomain" value="true" />
+		<property name="explicitQosEnabled" value="true" />
+	</bean>
+	
+	<!-- 订阅发送配置 -->
+	<bean id="sendtopic" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="${topic.name}"></constructor-arg>
+	</bean>
+	
+	<!-- 队列发送配置 -->
+	
+	<bean id="queueMQFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${queue.brokerUrl}" />
+	</bean>
+	<bean id="queueSpringFactory"
+		class="org.springframework.jms.connection.SingleConnectionFactory">
+		<property name="targetConnectionFactory" ref="queueMQFactory" />
+	</bean>
+	<bean id="queueJMSTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="queueSpringFactory" />
+		<property name="pubSubDomain" value="true" />
+		<property name="explicitQosEnabled" value="true" />
+	</bean>
+	<bean id="sendQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="${queue.name}"></constructor-arg>
+	</bean>
+
+	<!-- 监听MQ配置 -->
+	<!-- 定义MQ连接工厂，指定 url -->
+	<bean id="receiveMQFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${receive.brokerUrl}" />
+		<!-- 预取策略，可选 -->
+		<property name="prefetchPolicy" ref="prefetchPolicy" />
+	</bean>
+	<!-- 定义Spring连接工厂，引用MQ连接工厂 -->
+	<bean id="receiveSpringFactory"
+		class="org.springframework.jms.connection.SingleConnectionFactory">
+		<property name="targetConnectionFactory" ref="receiveMQFactory" />
+	</bean>
+	<!-- 设置监听的目标，可以是 queue,，也可以是 topic -->
+	<bean id="receiveName" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg name="name" value="${receive.name}" />
+	</bean>
+	<!-- 绑定java实际监听的类 -->
+	<bean id="MsgListener" class="teclan.spring.activemq.MsgListener" />
+	<!-- 定义 jms 容器 -->
+	<bean id="MsgListenerJMSContainer"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<!-- 设置连接工厂属性为 Spring连接工厂 -->
+		<property name="connectionFactory" ref="receiveSpringFactory" />
+		<!-- 设置监听目标属性为上述定义的目标 -->
+		<property name="destination" ref="receiveName" />
+		<!-- 设置消息监听者属性为绑定的java类 -->
+		<property name="messageListener" ref="MsgListener" />
+		<property name="sessionTransacted" value="true" />
+		<property name="concurrentConsumers" value="1"></property>
+	</bean>
+
+</beans>  
