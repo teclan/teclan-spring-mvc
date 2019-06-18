@@ -23,7 +23,7 @@ public class PropertyConfigUtil {
 	private static final String SEP = ",";
 	private static final String SEP2 = ":";
 
-	private static final String DEFAULT_ENV = "YW_ENV";
+	private static final String DEFAULT_ENV = "ENV";
 	private static final String DEFAULT_PROPERTIES_DIR = "properties/";
 
 	private static Hashtable<String, PropertyConfigUtil> propertyConfigUtils = new Hashtable<String, PropertyConfigUtil>();
