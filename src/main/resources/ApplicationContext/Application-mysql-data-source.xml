@@ -11,9 +11,9 @@
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:/properties/#{systemEnvironment['YW_ENV']}/mysql.properties
+				<value>classpath:/properties/#{systemEnvironment['ENV']}/mysql.properties
 				</value>
-				<value>classpath:/properties/#{systemEnvironment['YW_ENV']}/jms.properties
+				<value>classpath:/properties/#{systemEnvironment['ENV']}/jms.properties
 				</value>
 			</list>
 		</property>

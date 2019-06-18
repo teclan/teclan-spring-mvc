@@ -11,11 +11,11 @@
 
 现对此配置的影响做说明：
 
-例如，有环境变量 `YW_ENV`值为`dev`，**建议使用此环境变量值**，则启动程序的时候会加载 `src/main/resources/properties/dev/*.properties`，
+例如，有环境变量 `ENV`值为`dev`，**建议使用此环境变量值**，则启动程序的时候会加载 `src/main/resources/properties/dev/*.properties`，
 
-再例如有环境变量 `YW_ENV`值为`product`，建议使用此环境变量值，则启动程序的时候会加载 `src/main/resources/properties/product/*.properties`，
+再例如有环境变量 `ENV`值为`product`，建议使用此环境变量值，则启动程序的时候会加载 `src/main/resources/properties/product/*.properties`，
 
-如果环境变量 `YW_ENV`值为空或不存在，则直接加载`src/main/resources/*.properties`。
+如果环境变量 `ENV`值为空或不存在，则直接加载`src/main/resources/*.properties`。
 
 ### xml 配置和读取配置文件的发法。
 
@@ -31,8 +31,8 @@ xml文件中有需要指定加载配置文件路径的，示例配置如下:
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:/properties/#{systemEnvironment['YW_ENV']}/config.properties</value>
-				<value>classpath:/properties/#{systemEnvironment['YW_ENV']}/mysql.properties</value>
+				<value>classpath:/properties/#{systemEnvironment['ENV']}/config.properties</value>
+				<value>classpath:/properties/#{systemEnvironment['ENV']}/mysql.properties</value>
 				<!-- <value>classpath:/properties/postgreSQL.properties</value> -->
 			</list>
 		</property>
