@@ -118,12 +118,11 @@ public class ResultUtil {
 		return jsonResult;
 	}
 	
-	public static JSONObject simpleResponse(String code, String message, String detail) {
+	public static JSONObject simpleResponse(int code, String message, String detail) {
 		JSONObject jsonResult = new JSONObject();
 		jsonResult.put("code", code);
 		jsonResult.put("message", message);
 		jsonResult.put("detail", detail);
-		jsonResult.put("result", "{}");
 		return jsonResult;
 	}
 	

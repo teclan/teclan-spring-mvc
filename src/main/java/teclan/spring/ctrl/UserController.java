@@ -31,6 +31,6 @@ public class UserController {
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return ResultUtil.jsonResultList(200, "成功");
+        return ResultUtil.simpleResponse(200, "成功",null);
     }
 }

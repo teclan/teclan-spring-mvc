@@ -8,17 +8,27 @@ function register(){
 
 
 function login(id,password){
-    alert('登录,ID='+id+' ,password='+password);
+
+     var result;
 
      var handleSuccess = function(o){
             if(o !== undefined) {
                     try {
-                        var reseult = eval("("+o+")");
-                        if('1'==reseult.flag){
-                          return true; // 已收取
+                       result = o;
+
+                       if(result.code==200){
+
+                        	alert('登录成功');
+
+                        	window.open("http://www.qq.com")
+
                         }else{
-                            return false; // 未收取
+
+                            alert('登录失败');
+
                         }
+
+
                     } catch(e) {
                         alert("error!"+e);
                         return false;
@@ -31,7 +41,7 @@ function login(id,password){
 
     var json = '{"id":"'+id+'","password":"'+password+'"}';
 
- 	sync('POST',BASE_URL+'/user/login.do?id='+id+'&password='+password,json,handleSuccess,handleFailure);
+ 	async('POST',BASE_URL+'/user/login.do?id='+id+'&password='+password,json,handleSuccess,handleFailure);
 
 
 };

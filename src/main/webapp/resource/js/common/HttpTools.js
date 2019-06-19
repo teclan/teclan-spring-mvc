@@ -1,4 +1,4 @@
-function sync(method,url,suc,fai){
+function async(method,url,suc,fai){
 	var result="";
 	$.ajax({
         type: method,
@@ -20,7 +20,7 @@ function sync(method,url,suc,fai){
 };
 
 
-function sync(method,url,json,suc,fai){
+function async(method,url,json,suc,fai){
 	var result="";
 	$.ajax({
         type: method,
@@ -45,7 +45,7 @@ function sync(method,url,json,suc,fai){
 
 
 
-function async(method,url,suc,fai){
+function sync(method,url,suc,fai){
 	var result="";
 	$.ajax({
         type: method,
@@ -63,4 +63,27 @@ function async(method,url,suc,fai){
     });
 
    return result;
+};
+
+function async(method,url,json,suc,fai){
+	var result="";
+	$.ajax({
+        type: method,
+        contentType: "application/json;charset=utf-8",
+        url:url,
+        data:json,
+        async:false,
+
+        success: function (res) {
+		   result =  suc(res);
+       },
+
+       failure: function (res) {
+    	   result =  fai(res);
+       }
+
+    });
+
+    return result;
+
 };
