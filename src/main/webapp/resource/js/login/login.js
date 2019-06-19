@@ -2,7 +2,11 @@
 
 
 function register(){
- alert('注册，未实现！');
+  $.globalMessenger().post({
+     message: "未开放!",
+      hideAfter: 3,
+      type: 'info'
+  });
 
 };
 
@@ -11,20 +15,27 @@ function login(id,password){
 
      var result;
 
-     var handleSuccess = function(o){
-            if(o !== undefined) {
+     var handleSuccess = function(data){
+            if(data !== undefined) {
                     try {
-                       result = o;
 
-                       if(result.code==200){
+                       if(data.code==200){
 
-                        	alert('登录成功');
+                        $.globalMessenger().post({
+                                message: "登录成功",
+                                hideAfter: 1,
+                                type: 'success',
+                         });
 
-                        	window.open("http://www.qq.com")
+                        window.open("http://www.qq.com")
 
                         }else{
 
-                            alert('登录失败');
+                            $.globalMessenger().post({
+                                message: "登录失败",
+                                hideAfter: 3,
+                                type: 'info'
+                            });
 
                         }
 

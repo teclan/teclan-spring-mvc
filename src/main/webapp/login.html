@@ -8,11 +8,15 @@
 
 
     <link rel="stylesheet" href="resource/lib/bootstrap-3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="resource/lib/messenger/css/messenger.css">
+    <link rel="stylesheet" href="resource/lib/messenger/css/messenger-theme-future.js">
+
     <script  language="javascript" type="text/javascript"  src="resource/lib/js/jquery-3.4.1.min.js"></script>
     <script  language="javascript" type="text/javascript"  src="resource/lib/js/jquery-ajax-expand.js"></script>
     <script  language="javascript" type="text/javascript"  src="resource/lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <script  language="javascript" type="text/javascript"  src="resource/js/login/login.js"></script>
     <script  language="javascript" type="text/javascript"  src="resource/js/common/HttpTools.js"></script>
+    <script  language="javascript" type="text/javascript"  src="resource/lib/messenger/js/messenger.min.js"></script>
     <script  language="javascript" type="text/javascript"  src="resource/js/common/config.js"></script>
 
     <style type="text/css">
@@ -53,9 +57,13 @@
       login(id,password);
     };
 
+    $._messengerDefaults = {
+           extraClasses: 'messenger-fixed messenger-theme-future messenger-on-top messenger-on-center'
+    }
+
 </script>
 
-      <div class="main">
+      <div class="main" id="main">
           <h1>XXX系统</h1>
 
           </br>
@@ -81,6 +89,8 @@
               <button type="button" class="btn btn-default" onclick="doLogin()">登录</button>
 
           </div>
+
+
       </div>
 
 </body>
