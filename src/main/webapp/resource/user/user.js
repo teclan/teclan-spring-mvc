@@ -27,7 +27,7 @@ function query(currentPage){
                                 tr+='<td> '+val.name+' </td>';
                                 tr+='<td> '+val.phone+' </td>';
                                 tr+='<td> '+val.id_card+' </td>';
-                                 tr+='<td> <a href="https://www.baidu.com"> 删除</a>  <a href="https://www.baidu.com"> 编辑</a> </td>';
+                                 tr+='<td> <a href="https://www.baidu.com"> 删除</a> | <a href="https://www.baidu.com"> 编辑</a> </td>';
 
                                 tr+='</tr>';
 
@@ -37,7 +37,7 @@ function query(currentPage){
 
                              $.globalMessenger().post({
                                 message: '查询成功',
-                                hideAfter: 3,
+                                hideAfter: 1,
                                 type: 'info'
                             });
 
@@ -71,7 +71,73 @@ function get(){
  query(currentPage);
 };
 
+// 访问首页
+function getFirst(){
 
+     if(isFirst){
+        $.globalMessenger().post({
+            message: '当前已经是首页了！',
+            hideAfter: 1,
+            type: 'info'
+        });
+
+        return ;
+     }
+
+    currentPage=1;
+    get(currentPage,PAGE_SIZE);
+};
+
+// 访问末页
+function getLast(){
+
+     if(isLast){
+        $.globalMessenger().post({
+            message: '当前已经是末页了！',
+            hideAfter: 1,
+            type: 'info'
+        });
+
+        return ;
+     }
+
+    currentPage=totalPages;
+    get(currentPage,PAGE_SIZE);
+};
+
+// 访问上一页
+function getPrevious(){
+    if(currentPage-1<1){
+        $.globalMessenger().post({
+                message: '不存在上一页！',
+                hideAfter: 1,
+                type: 'info'
+         });
+
+        return ;
+
+    }
+    currentPage=currentPage-1;
+    get(currentPage,PAGE_SIZE);
+};
+
+// 访问下一页
+function getNext(){
+
+
+    if(currentPage+1>totalPages){
+        $.globalMessenger().post({
+                message: '不存在下一页！',
+                hideAfter: 1,
+                type: 'info'
+         });
+
+        return ;
+
+    }
+    currentPage=currentPage+1;
+    get(currentPage,PAGE_SIZE);
+};
 
 function flushPageInfo(pageInfo){
    currentPage=pageInfo.currentPage;
@@ -79,9 +145,6 @@ function flushPageInfo(pageInfo){
    totalPages=pageInfo.totalPages;
    isFirst=pageInfo.isFirst;
    isLast=pageInfo.isLast;
-
-   $('#first').text(isFirst);
-   $('#last').text(isLast);
    $('#info').text('第'+currentPage+'页/共'+totalPages+'页/总数'+totals);
 };
 

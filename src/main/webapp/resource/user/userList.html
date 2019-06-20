@@ -30,15 +30,8 @@
         $("#home").attr("href",BASE_URL+"/resource/home/home.html");
         $("#user").attr("href",BASE_URL+"/resource/user/userList.html");
         $('#user').css('font-size','25px');
+        get();
     });
-
- $._messengerDefaults = {
-           extraClasses: 'messenger-fixed messenger-theme-future messenger-on-top messenger-on-center'
-    };
-
-
-
-
 </script>
 
 <nav class="nav navbar-inverse navbar-fixed-top">
@@ -87,11 +80,11 @@
 
 <nav aria-label="...">
     <ul class="pager">
-        <li><a href="#" id="first">首页</a></li>
-        <li><a href="#" id="previous">上一页</a></li>
+        <li><a href="#" id="first" onclick="getFirst()">首页</a></li>
+        <li><a href="#" id="previous" onclick="getPrevious()">上一页</a></li>
         <li><a href="#" id="info">第0页/共1页</a></li>
-        <li><a href="#" id="next">下一页</a></li>
-        <li><a href="#" id="last">末页</a></li>
+        <li><a href="#" id="next" onclick="getNext()">下一页</a></li>
+        <li><a href="#" id="last" onclick="getLast()">末页</a></li>
     </ul>
 </nav>
 
