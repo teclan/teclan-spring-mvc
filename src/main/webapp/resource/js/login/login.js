@@ -27,7 +27,8 @@ function login(id,password){
                                 type: 'success',
                          });
 
-                        window.open(BASE_URL+"/resource/home/home.html")
+                        //window.open(BASE_URL+"/resource/home/home.html");
+                        window.location.href=BASE_URL+"/resource/home/home.html";
 
                         }else{
 
