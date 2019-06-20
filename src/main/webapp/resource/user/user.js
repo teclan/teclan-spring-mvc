@@ -27,7 +27,10 @@ function query(currentPage){
                                 tr+='<td> '+val.name+' </td>';
                                 tr+='<td> '+val.phone+' </td>';
                                 tr+='<td> '+val.id_card+' </td>';
-                                 tr+='<td> <a href="https://www.baidu.com"> 删除</a> | <a href="https://www.baidu.com"> 编辑</a> </td>';
+                                tr+='<td> '
+                                +'<button class="btn btn-default" type="button" data="'+val.id+'" onclick="del(this)">删除</button> '
+                                +'| <button class="btn btn-default" type="button" data="'+val.id+'" onclick="edit(this)">编辑</button> '
+                                +' </td>';
 
                                 tr+='</tr>';
 
@@ -66,6 +69,7 @@ function query(currentPage){
    async('POST',BASE_URL+'/user/get.do',json,handleSuccess,handleFailure);
 
 };
+
 
 function get(){
  query(currentPage);
@@ -146,5 +150,19 @@ function flushPageInfo(pageInfo){
    isFirst=pageInfo.isFirst;
    isLast=pageInfo.isLast;
    $('#info').text('第'+currentPage+'页/共'+totalPages+'页/总数'+totals);
+};
+
+function del(val){
+
+var id = eval(val.attributes.data.nodeValue);
+
+alert('删除，id='+id);
+};
+
+function edit(val){
+
+var id = eval(val.attributes.data.nodeValue);
+
+ alert('编辑，id='+id);
 };
 
