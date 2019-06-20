@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+
+    <link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.css">
+
+    <script  language="javascript" type="text/javascript"  src="../lib/js/jquery-3.4.1.min.js"></script>
+    <script  language="javascript" type="text/javascript"  src="..//lib/js/jquery-ajax-expand.js"></script>
+
+    <script  language="javascript" type="text/javascript"  src="../js/common/config.js"></script>
+
+    <title>用户管理</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#home").attr("href",BASE_URL+"/resource/home/home.html");
+        $("#user").attr("href",BASE_URL+"/resource/user/userList.html");
+        $('#user').css('font-size','25px')
+    })
+
+</script>
+
+<nav class="nav navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div id="menu" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <a id="home" chref="" class="navbar-brand">首页</a>
+                <li><a id="user" class="navbar-brand active"  href="">用户</a></li>
+                <li><a class="navbar-brand" href="#">任务</a></li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    three<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">first</a></li>
+                        <li><a href="#">second</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div style="padding-left:10px;padding-top:100px;padding-top:100px;padding-bottom:10px;">
+    <button class="btn btn-default" type="button">新增</button>
+    <button class="btn btn-default" type="button">修改</button>
+    <button class="btn btn-default" type="button">删除</button>
+
+</div>
+
+<table class="table table-hover table-bordered">
+    <th>
+        <tr class="success">
+            <td>ID</td>
+            <td>姓名</td>
+            <td>性别</td>
+            <td>电话</td>
+            <td>住址</td>
+        </tr>
+    </th>
+
+    <tr class="active">
+
+    <tr>
+        <td>a</td>
+        <td>b</td>
+        <td>c</td>
+        <td>d</td>
+        <td>e</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+    </tr>
+
+    </tr>
+
+</table>
+
+</body>
+</html>

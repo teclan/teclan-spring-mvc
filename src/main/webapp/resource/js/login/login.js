@@ -27,7 +27,7 @@ function login(id,password){
                                 type: 'success',
                          });
 
-                        window.open("http://www.qq.com")
+                        window.open(BASE_URL+"/resource/home/home.html")
 
                         }else{
 
