@@ -65,7 +65,7 @@ function sync(method,url,suc,fai){
    return result;
 };
 
-function async(method,url,json,suc,fai){
+function sync(method,url,json,suc,fai){
 	var result="";
 	$.ajax({
         type: method,

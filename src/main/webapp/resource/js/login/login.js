@@ -52,7 +52,6 @@ function login(id,password){
 
     var json = '{"id":"'+id+'","password":"'+password+'"}';
 
- 	async('POST',BASE_URL+'/user/login.do?id='+id+'&password='+password,json,handleSuccess,handleFailure);
-
+ 	async('POST',BASE_URL+'/user/login.do',json,handleSuccess,handleFailure);
 
 };

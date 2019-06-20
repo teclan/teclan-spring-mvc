@@ -1,14 +1,21 @@
+var currentPage=1;
+var totals=0;
+var totalPages=0;
+var isFirst=false;
+var isLast=false;
 
-    function get(){
+function query(currentPage){
 
      var result;
 
-     var handleSuccess = function(data){
-            if(data !== undefined) {
+     var handleSuccess = function(response){
+            if(response !== undefined) {
                     try {
 
-                       if(data.code==200){
-                            var data=eval(data.data);
+                       if(response.code==200){
+
+                            // 内容相关
+                            var data=eval(response.data);
 
                             var tbody = document.getElementById('tbody');
 
@@ -19,7 +26,7 @@
                                 tr+='<td> '+val.id+' </td>';
                                 tr+='<td> '+val.name+' </td>';
                                 tr+='<td> '+val.phone+' </td>';
-                                tr+='<td> '+val.address+' </td>';
+                                tr+='<td> '+val.id_card+' </td>';
                                  tr+='<td> <a href="https://www.baidu.com"> 删除</a>  <a href="https://www.baidu.com"> 编辑</a> </td>';
 
                                 tr+='</tr>';
@@ -34,6 +41,8 @@
                                 type: 'info'
                             });
 
+                            var pageInfo=eval(response.pageInfo);
+                            flushPageInfo(pageInfo);
                        }else{
 
                             $.globalMessenger().post({
@@ -53,7 +62,26 @@
  	 var handleFailure = function(o){
  	 };
 
-
- 	sync('POST',BASE_URL+'/user/get.do',handleSuccess,handleFailure);
+   var json = '{"currentPage":'+currentPage+',"pageSize":'+PAGE_SIZE+'}';
+   async('POST',BASE_URL+'/user/get.do',json,handleSuccess,handleFailure);
 
 };
+
+function get(){
+ query(currentPage);
+};
+
+
+
+function flushPageInfo(pageInfo){
+   currentPage=pageInfo.currentPage;
+   totals=pageInfo.totals;
+   totalPages=pageInfo.totalPages;
+   isFirst=pageInfo.isFirst;
+   isLast=pageInfo.isLast;
+
+   $('#first').text(isFirst);
+   $('#last').text(isLast);
+   $('#info').text('第'+currentPage+'页/共'+totalPages+'页/总数'+totals);
+};
+
