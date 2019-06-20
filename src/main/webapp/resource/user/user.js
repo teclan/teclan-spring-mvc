@@ -122,7 +122,30 @@ function flushPageInfo(pageInfo){
 function del(val){
    // var id = eval(val.attributes.data.nodeValue);
     var id=$(val).attr('data');
-    showMessage('删除，id = '+id);
+
+    var handleSuccess = function(response){
+                if(response !== undefined) {
+                        try {
+
+                           if(response.code==200){
+                               showMessage(response.message);
+                               get();
+                           }else{
+                                showMessage(response.message);
+                           }
+
+                        } catch(e) {
+                            alert("error!"+e);
+                            return false;
+                        }
+               }
+          };
+
+     	 var handleFailure = function(o){
+     	 };
+
+    var json = '{"id":'+id+'}';
+     async('POST',BASE_URL+'/user/delete.do',json,handleSuccess,handleFailure);
 };
 
 function edit(val){

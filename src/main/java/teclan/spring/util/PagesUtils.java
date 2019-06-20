@@ -25,4 +25,9 @@ public class PagesUtils {
         return (int)Math.ceil(total*1.0/pageSize);
 
     }
+
+    public static int getCurrentPage(int totalPages,int currentPage){
+        return currentPage>totalPages?totalPages:currentPage;
+
+    }
 }
