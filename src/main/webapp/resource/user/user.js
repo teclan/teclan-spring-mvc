@@ -38,21 +38,12 @@ function query(currentPage){
                             });
                             tbody.innerHTML = tableContent;
 
-                             $.globalMessenger().post({
-                                message: '查询成功',
-                                hideAfter: 1,
-                                type: 'info'
-                            });
+                           showMessage(response.message);
 
                             var pageInfo=eval(response.pageInfo);
                             flushPageInfo(pageInfo);
                        }else{
-
-                            $.globalMessenger().post({
-                                message: 'xx',
-                                hideAfter: 3,
-                                type: 'info'
-                            });
+                            showMessage(response.message);
                        }
 
                     } catch(e) {
@@ -79,12 +70,7 @@ function get(){
 function getFirst(){
 
      if(isFirst){
-        $.globalMessenger().post({
-            message: '当前已经是首页了！',
-            hideAfter: 1,
-            type: 'info'
-        });
-
+       showMessage( '当前已经是首页了！');
         return ;
      }
 
@@ -96,12 +82,7 @@ function getFirst(){
 function getLast(){
 
      if(isLast){
-        $.globalMessenger().post({
-            message: '当前已经是末页了！',
-            hideAfter: 1,
-            type: 'info'
-        });
-
+        showMessage( '当前已经是末页了！');
         return ;
      }
 
@@ -112,14 +93,8 @@ function getLast(){
 // 访问上一页
 function getPrevious(){
     if(currentPage-1<1){
-        $.globalMessenger().post({
-                message: '不存在上一页！',
-                hideAfter: 1,
-                type: 'info'
-         });
-
+       showMessage( '不存在上一页！');
         return ;
-
     }
     currentPage=currentPage-1;
     get(currentPage,PAGE_SIZE);
@@ -127,17 +102,9 @@ function getPrevious(){
 
 // 访问下一页
 function getNext(){
-
-
     if(currentPage+1>totalPages){
-        $.globalMessenger().post({
-                message: '不存在下一页！',
-                hideAfter: 1,
-                type: 'info'
-         });
-
+       showMessage( '不存在下一页！');
         return ;
-
     }
     currentPage=currentPage+1;
     get(currentPage,PAGE_SIZE);
@@ -153,16 +120,14 @@ function flushPageInfo(pageInfo){
 };
 
 function del(val){
-
-var id = eval(val.attributes.data.nodeValue);
-
-alert('删除，id='+id);
+   // var id = eval(val.attributes.data.nodeValue);
+    var id=$(val).attr('data');
+    showMessage('删除，id = '+id);
 };
 
 function edit(val){
-
-var id = eval(val.attributes.data.nodeValue);
-
- alert('编辑，id='+id);
+    // var id = eval(val.attributes.data.nodeValue);
+    var id=$(val).attr('data');
+    showMessage('编辑，id = '+id);
 };
 

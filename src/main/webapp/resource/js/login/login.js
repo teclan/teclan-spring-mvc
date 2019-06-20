@@ -21,23 +21,13 @@ function login(id,password){
 
                        if(data.code==200){
 
-                        $.globalMessenger().post({
-                                message: "登录成功",
-                                hideAfter: 1,
-                                type: 'success',
-                         });
+                        showMessage(data.message);
 
                         //window.open(BASE_URL+"/resource/home/home.html");
                         window.location.href=BASE_URL+"/resource/home/home.html";
 
                         }else{
-
-                            $.globalMessenger().post({
-                                message: "登录失败",
-                                hideAfter: 3,
-                                type: 'info'
-                            });
-
+                           showMessage(data.message);
                         }
 
 
