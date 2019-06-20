@@ -7,11 +7,18 @@
 
 
     <link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="../lib/messenger/css/messenger.css">
 
     <script  language="javascript" type="text/javascript"  src="../lib/js/jquery-3.4.1.min.js"></script>
-    <script  language="javascript" type="text/javascript"  src="..//lib/js/jquery-ajax-expand.js"></script>
+    <script  language="javascript" type="text/javascript"  src="../lib/js/jquery-ajax-expand.js"></script>
+
+    <script  language="javascript" type="text/javascript"  src="../lib/messenger/js/messenger.min.js"></script>
+    <script  language="javascript" type="text/javascript"  src="../lib/messenger/js/messenger-theme-future.js"></script>
 
     <script  language="javascript" type="text/javascript"  src="../js/common/config.js"></script>
+    <script  language="javascript" type="text/javascript"  src="../js/common/HttpTools.js"></script>
+
+    <script  language="javascript" type="text/javascript"  src="../user/user.js"></script>
 
     <title>用户管理</title>
 </head>
@@ -22,8 +29,12 @@
     $(function () {
         $("#home").attr("href",BASE_URL+"/resource/home/home.html");
         $("#user").attr("href",BASE_URL+"/resource/user/userList.html");
-        $('#user').css('font-size','25px')
-    })
+        $('#user').css('font-size','25px');
+    });
+
+ $._messengerDefaults = {
+           extraClasses: 'messenger-fixed messenger-theme-future messenger-on-top messenger-on-center'
+    }
 
 </script>
 
@@ -49,39 +60,25 @@
 
 <div style="padding-left:10px;padding-top:100px;padding-top:100px;padding-bottom:10px;">
     <button class="btn btn-default" type="button">新增</button>
-    <button class="btn btn-default" type="button">修改</button>
     <button class="btn btn-default" type="button">删除</button>
+    <button class="btn btn-default" type="button" onclick="get()">查询</button>
 
 </div>
 
-<table class="table table-hover table-bordered">
-    <th>
+<table class="table table-hover table-bordered" id="userList">
+    <thead>
         <tr class="success">
-            <td>ID</td>
-            <td>姓名</td>
-            <td>性别</td>
-            <td>电话</td>
-            <td>住址</td>
+            <th>ID</th>
+            <th>姓名</th>
+            <th>电话</th>
+            <th>住址</th>
+            <th>操作</th>
         </tr>
-    </th>
+    </thead>
 
-    <tr class="active">
+    <tbody id="tbody" class="active">
 
-    <tr>
-        <td>a</td>
-        <td>b</td>
-        <td>c</td>
-        <td>d</td>
-        <td>e</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-    </tr>
-
+    </tbody>
     </tr>
 
 </table>

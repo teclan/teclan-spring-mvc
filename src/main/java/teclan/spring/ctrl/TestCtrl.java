@@ -46,7 +46,7 @@ public class TestCtrl {
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
-		return ResultUtil.jsonResultList(500, "失败");
+		return ResultUtil.get(500, "失败");
 	}
 
 	@RequestMapping(value = "test1")
@@ -66,7 +66,7 @@ public class TestCtrl {
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
-		return ResultUtil.jsonResultList(500, "失败");
+		return ResultUtil.get(500, "失败");
 	}
 	
 }
