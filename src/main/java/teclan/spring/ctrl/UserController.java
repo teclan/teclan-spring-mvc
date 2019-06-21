@@ -45,9 +45,9 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/get")
+    @RequestMapping(value = "/page")
     @ResponseBody
-    public JSONObject get(HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject page(HttpServletRequest request, HttpServletResponse response) {
         try {
             String json = HttpTool.readJSONString(request);
             JSONObject parameter = JSON.parseObject(json);
@@ -103,5 +103,54 @@ public class UserController {
             return ResultUtil.get(200, "删除失败",e.getMessage());
         }
 
+    }
+
+    @RequestMapping(value = "/get")
+    @ResponseBody
+    public JSONObject get(HttpServletRequest request, HttpServletResponse response) {
+        try {
+
+            String json = HttpTool.readJSONString(request);
+            JSONObject parameter = JSON.parseObject(json);
+
+            int id = parameter.getIntValue("id");
+
+            List<Map<String,Object>> maps = jdbcTemplate.queryForList(String.format("select id,name,phone,id_card from user_info where id=%s",id));
+
+            return ResultUtil.get(200, "查询成功",maps.get(0));
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(200, "查询失败",e.getMessage());
+        }
+    }
+
+
+    @RequestMapping(value = "/update")
+    @ResponseBody
+    public JSONObject update(HttpServletRequest request, HttpServletResponse response) {
+        try {
+
+            String json = HttpTool.readJSONString(request);
+            JSONObject parameter = JSON.parseObject(json);
+
+            int id = parameter.getIntValue("id");
+            int name = parameter.getIntValue("name");
+            int phone = parameter.getIntValue("phone");
+            int idCard = parameter.getIntValue("id_card");
+
+
+            int row = jdbcTemplate.update("update user_info set name=?,phone=?,id_card=? where id=?",name,phone,idCard,id);
+
+            if(row>0){
+                return ResultUtil.get(200, "修改成功");
+            }else{
+                return ResultUtil.get(403, "记录不存在");
+            }
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(200, "修改失败",e.getMessage());
+        }
     }
 }

@@ -22,7 +22,8 @@
     <script  language="javascript" type="text/javascript"  src="../user/user.js"></script>
     <script  language="javascript" type="text/javascript"  src="../user/help.js"></script>
 
-    <title>用户管理</title>
+    <title>用户编辑</title>
+
 </head>
 <body>
 
@@ -32,9 +33,9 @@
         $("#home").attr("href",BASE_URL+"/resource/home/home.html");
         $("#user").attr("href",BASE_URL+"/resource/user/userList.html");
         $('#user').css('font-size','25px');
-        get();
-    });
+       getById();
 
+    });
 
 
 </script>
@@ -59,40 +60,50 @@
 </nav>
 
 
-<div style="padding-left:10px;padding-top:100px;padding-top:100px;padding-bottom:10px;">
-    <button class="btn btn-default" type="button">新增</button>
-    <button class="btn btn-default" type="button" onclick="get()">查询</button>
+
+<div style="padding-left:400px;padding-top:80px;padding-bottom:10px;width: 1000px;">
+    <h2 class="label label-info" style="font-size:20px;">用户/编辑</h2>
+
+    <div id="main" style="padding-top:30px;" >
+
+        <div class="input-group">
+            <span class="input-group-addon" >编号</span>
+            <input type="text" id="id" value="" class="form-control" placeholder="未设置">
+        </div>
+
+        </br>
+
+        <div class="input-group">
+            <span class="input-group-addon" >姓名</span>
+            <input type="text" id="name" value="" class="form-control" placeholder="未设置">
+        </div>
+
+        </br>
+
+        <div class="input-group">
+            <span class="input-group-addon">电话</span>
+            <input type="text" id="phone" value="" class="form-control" placeholder="未设置">
+        </div>
+
+        </br>
+
+        <div class="input-group">
+            <span class="input-group-addon" >证件号</span>
+            <input type="text" id="id_card" value="" class="form-control" placeholder="未设置">
+        </div>
+
+    </div>
+
+
+    <div  style="padding-left:488px;padding-top:10px;">
+        <button type="button" class="btn btn-default" onclick="window.history.back(-1);">返回</button>
+
+        <button type="button" class="btn btn-default" onclick="alert('保存')">保存</button>
+
+    </div>
 
 </div>
 
-
-<table class="table table-hover table-bordered" id="userList">
-    <thead>
-        <tr class="success">
-            <th>ID</th>
-            <th>姓名</th>
-            <th>电话</th>
-            <th>证件号</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-
-    <tbody id="tbody" class="active">
-
-    </tbody>
-    </tr>
-
-</table>
-
-<nav aria-label="...">
-    <ul class="pager">
-        <li><a href="#" id="first" onclick="getFirst()">首页</a></li>
-        <li><a href="#" id="previous" onclick="getPrevious()">上一页</a></li>
-        <li><a href="#" id="info">第0页/共1页</a></li>
-        <li><a href="#" id="next" onclick="getNext()">下一页</a></li>
-        <li><a href="#" id="last" onclick="getLast()">末页</a></li>
-    </ul>
-</nav>
 
 </body>
 </html>

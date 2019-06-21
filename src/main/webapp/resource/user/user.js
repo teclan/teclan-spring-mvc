@@ -4,6 +4,7 @@ var totalPages=0;
 var isFirst=false;
 var isLast=false;
 
+
 function query(currentPage){
 
      var result;
@@ -29,7 +30,7 @@ function query(currentPage){
                                 tr+='<td> '+val.id_card+' </td>';
                                 tr+='<td> '
                                 +'<button class="btn btn-default" type="button" data="'+val.id+'" onclick="del(this)">删除</button> '
-                                +'| <button class="btn btn-default" type="button" data="'+val.id+'" onclick="edit(this)">编辑</button> '
+                                +'<button class="btn btn-default" type="button" data="'+val.id+'" onclick="edit(this)">编辑</button> '
                                 +' </td>';
 
                                 tr+='</tr>';
@@ -57,7 +58,7 @@ function query(currentPage){
  	 };
 
    var json = '{"currentPage":'+currentPage+',"pageSize":'+PAGE_SIZE+'}';
-   async('POST',BASE_URL+'/user/get.do',json,handleSuccess,handleFailure);
+   async('POST',BASE_URL+'/user/page.do',json,handleSuccess,handleFailure);
 
 };
 
@@ -151,6 +152,45 @@ function del(val){
 function edit(val){
     // var id = eval(val.attributes.data.nodeValue);
     var id=$(val).attr('data');
-    showMessage('编辑，id = '+id);
+    SELECT_ID = id;
+    localStorage.setItem("SELECT_ID",id);
+    window.location.href=BASE_URL+"/resource/user/edit.html";
 };
+
+function getById(){
+
+    var handleSuccess = function(response){
+         if(response !== undefined) {
+             try {
+
+                 if(response.code==200){
+                    showMessage(response.message);
+
+                    var data = response.data;
+
+                    $("#id").attr("value",data.id);
+                    $("#name").attr("value",data.name);
+                    $("#phone").attr("value",data.phone);
+                    $("#id_card").attr("value",data.id_card);
+
+                 }else{
+                    showMessage(response.message);
+                 }
+
+             } catch(e) {
+                 alert("error!"+e);
+                 return false;
+             }
+         }
+    };
+
+    var handleFailure = function(o){
+    };
+
+    var SELECT_ID = localStorage.getItem("SELECT_ID");
+
+    var json = '{"id":'+SELECT_ID+'}';
+    async('POST',BASE_URL+'/user/get.do',json,handleSuccess,handleFailure);
+
+}
 
