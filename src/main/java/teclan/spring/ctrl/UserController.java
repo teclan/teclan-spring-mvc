@@ -134,10 +134,10 @@ public class UserController {
             String json = HttpTool.readJSONString(request);
             JSONObject parameter = JSON.parseObject(json);
 
-            int id = parameter.getIntValue("id");
-            int name = parameter.getIntValue("name");
-            int phone = parameter.getIntValue("phone");
-            int idCard = parameter.getIntValue("id_card");
+            String id = parameter.getString("id");
+            String name = parameter.getString("name");
+            String phone = parameter.getString("phone");
+            String idCard = parameter.getString("id_card");
 
 
             int row = jdbcTemplate.update("update user_info set name=?,phone=?,id_card=? where id=?",name,phone,idCard,id);

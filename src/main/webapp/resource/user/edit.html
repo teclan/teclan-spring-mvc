@@ -37,6 +37,19 @@
 
     });
 
+function update(){
+
+  var id= $('#id').val();
+  var name= $('#name').val();
+  var phone= $('#phone').val();
+  var id_card= $('#id_card').val();
+
+  var json = '{"id":"'+id+'","name":"'+name+'","phone":"'+phone+'","id_card":"'+id_card+'"}';
+
+  doUpdate(json);
+
+};
+
 
 </script>
 
@@ -98,7 +111,7 @@
     <div  style="padding-left:488px;padding-top:10px;">
         <button type="button" class="btn btn-default" onclick="window.history.back(-1);">返回</button>
 
-        <button type="button" class="btn btn-default" onclick="alert('保存')">保存</button>
+        <button type="button" class="btn btn-default" onclick="update()">更新</button>
 
     </div>
 

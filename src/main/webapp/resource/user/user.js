@@ -23,12 +23,12 @@ function query(currentPage){
                             var tableContent='';
                             $(data).each(function (index){
                                 var val=data[index];
-                                var tr='<tr class="active"> ';
+                                var tr='<tr class="active text-center"> ';
                                 tr+='<td> '+val.id+' </td>';
                                 tr+='<td> '+val.name+' </td>';
                                 tr+='<td> '+val.phone+' </td>';
                                 tr+='<td> '+val.id_card+' </td>';
-                                tr+='<td> '
+                                tr+='<td class="active text-left" style="width: 200px;"> '
                                 +'<button class="btn btn-default" type="button" data="'+val.id+'" onclick="del(this)">删除</button> '
                                 +'<button class="btn btn-default" type="button" data="'+val.id+'" onclick="edit(this)">编辑</button> '
                                 +' </td>';
@@ -193,4 +193,32 @@ function getById(){
     async('POST',BASE_URL+'/user/get.do',json,handleSuccess,handleFailure);
 
 }
+
+
+function doUpdate(json){
+
+        var handleSuccess = function(response){
+           if(response !== undefined) {
+               try {
+
+                  if(response.code==200){
+                      showMessage(response.message);
+                         //get();
+                  }else{
+                          showMessage(response.message);
+                  }
+
+               } catch(e) {
+                   alert("error!"+e);
+                   return false;
+               }
+           }
+        };
+
+     	var handleFailure = function(o){
+     	};
+
+     async('POST',BASE_URL+'/user/update.do',json,handleSuccess,handleFailure);
+
+};
 
