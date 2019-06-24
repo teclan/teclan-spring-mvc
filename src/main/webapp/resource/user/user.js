@@ -168,6 +168,12 @@ function getById(){
 
                     var data = response.data;
 
+                    // 先将输入框中缓存的输入值清空，否则如果存在缓存的话，看不出是后台返回的时间还是未提交的数据
+                   // $('#id').val('');
+                   // $('#name').val('');
+                   // $('#phone').val('');
+                   // $('#id_card').val('');
+
                     $("#id").attr("value",data.id);
                     $("#name").attr("value",data.name);
                     $("#phone").attr("value",data.phone);

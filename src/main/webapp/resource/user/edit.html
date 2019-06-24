@@ -8,12 +8,16 @@
 
     <link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="../lib/messenger/css/messenger.css">
+    <link rel="stylesheet" href="../lib/bootstrapvalidator/css/bootstrapValidator.min.css" />
 
     <script  language="javascript" type="text/javascript"  src="../lib/js/jquery-3.4.1.min.js"></script>
     <script  language="javascript" type="text/javascript"  src="../lib/js/jquery-ajax-expand.js"></script>
 
     <script  language="javascript" type="text/javascript"  src="../lib/messenger/js/messenger.min.js"></script>
     <script  language="javascript" type="text/javascript"  src="../lib/messenger/js/messenger-theme-future.js"></script>
+
+    <script  language="javascript" type="text/javascript"  src="../lib/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+
 
     <script  language="javascript" type="text/javascript"  src="../js/common/config.js"></script>
     <script  language="javascript" type="text/javascript"  src="../js/common/HttpTools.js"></script>
@@ -24,20 +28,37 @@
 
     <title>用户编辑</title>
 
+
+    .input-group .form-control-feedback {
+        top: 0;
+        right: -30px;
+    }
+
 </head>
 <body>
 
 <script type="text/javascript">
 
     $(function () {
+        check();
         $("#home").attr("href",BASE_URL+"/resource/home/home.html");
         $("#user").attr("href",BASE_URL+"/resource/user/userList.html");
         $('#user').css('font-size','25px');
-       getById();
+        getById();
+
 
     });
 
 function update(){
+
+ var bootstrapValidator = $("#defaultForm").data('bootstrapValidator');
+
+   bootstrapValidator.validate();
+   if(!bootstrapValidator.isValid()){
+     // 如果有验证未通过的项，给出提示，且终止后续逻辑
+     showMessageWithTimeOut('表单有验证失败的项，请先处理后再执行此操作!',3);
+     return;
+   }
 
   var id= $('#id').val();
   var name= $('#name').val();
@@ -45,9 +66,53 @@ function update(){
   var id_card= $('#id_card').val();
 
   var json = '{"id":"'+id+'","name":"'+name+'","phone":"'+phone+'","id_card":"'+id_card+'"}';
-
   doUpdate(json);
+};
 
+function check(){
+
+         $('#defaultForm').bootstrapValidator({
+
+        　　　　　　　// 为每个字段指定通用错误提示语
+                    message: '值不允许为空',
+                    feedbackIcons: {
+                        　　valid: 'glyphicon glyphicon-ok',
+                        　　invalid: 'glyphicon glyphicon-remove',
+                        　　validating: 'glyphicon glyphicon-refresh'
+                    },
+                    /**
+                    * 生效规则（三选一）
+                    * enabled 字段值有变化就触发验证
+                    * disabled,submitted 当点击提交时验证并展示错误信息
+                    */
+                    live: 'enabled',
+
+                    fields: {
+                        name: {
+                            enabled: true,
+                            message: '姓名验证失败',
+                            validators: {
+                                notEmpty: {
+                                    message: '用户名不能为空'
+                                }
+                            }
+                        },
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '电话不能为空'
+                                }
+                            }
+                        },
+                        id_card: {
+                            validators: {
+                                notEmpty: {
+                                    message: '证件号不能为空'
+                                }
+                            }
+                        }
+                    }
+                });
 };
 
 
@@ -73,48 +138,65 @@ function update(){
 </nav>
 
 
+<div  class="panel panel-default" style="margin-left:150px; padding-left:40px;padding-top:10px;padding-bottom:10px;width: 1000px;">
 
-<div style="padding-left:400px;padding-top:80px;padding-bottom:10px;width: 1000px;">
-    <h2 class="label label-info" style="font-size:20px;">用户/编辑</h2>
 
-    <div id="main" style="padding-top:30px;" >
+    <div  style="margin-left:100px; margin-top:100px; margin-right:100px; margin-bottom:60px; padding-top:10px">
 
-        <div class="input-group">
-            <span class="input-group-addon" >编号</span>
-            <input type="text" id="id" value="" class="form-control" placeholder="未设置">
+        <h2 class="label label-info" style="font-size:20px;">用户/编辑</h2>
+
+        <div  class="form-group" id="main" style="padding-top:30px;" >
+
+            <form id="defaultForm" class="form-horizontal">
+
+
+                <div class="form-group">
+                    <label for="id" class="col-sm-2 control-label">姓名：</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="id" name="id" value="" class="form-control" placeholder="编号">
+                        <span class="form-control-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">姓名：</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="name" name="name" value="" class="form-control" placeholder="姓名（必填）">
+                        <span class="form-control-feedback"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="phone" class="col-sm-2 control-label">电话：</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="phone" name="phone" value="" class="form-control" placeholder="电话（必填）">
+                        <span class="form-control-feedback"></span>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="id_card" class="col-sm-2 control-label">证件号：</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="id_card" name="id_card" value="" class="form-control" placeholder="证件号（必填）">
+                        <span class="form-control-feedback"></span>
+                    </div>
+                </div>
+
+            </form>
+
+            </br>
+
         </div>
+        <div  style="margin-left:647px;;padding-top:10px;">
+            <button type="button" class="btn btn-default" onclick="window.history.back(-1);">返回</button>
 
-        </br>
+            <button type="button" class="btn btn-default" onclick="update()">更新</button>
 
-        <div class="input-group">
-            <span class="input-group-addon" >姓名</span>
-            <input type="text" id="name" value="" class="form-control" placeholder="未设置">
         </div>
-
-        </br>
-
-        <div class="input-group">
-            <span class="input-group-addon">电话</span>
-            <input type="text" id="phone" value="" class="form-control" placeholder="未设置">
-        </div>
-
-        </br>
-
-        <div class="input-group">
-            <span class="input-group-addon" >证件号</span>
-            <input type="text" id="id_card" value="" class="form-control" placeholder="未设置">
-        </div>
-
     </div>
-
-
-    <div  style="padding-left:488px;padding-top:10px;">
-        <button type="button" class="btn btn-default" onclick="window.history.back(-1);">返回</button>
-
-        <button type="button" class="btn btn-default" onclick="update()">更新</button>
-
-    </div>
-
 </div>
 
 
