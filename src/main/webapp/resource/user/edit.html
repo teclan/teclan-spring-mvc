@@ -46,12 +46,15 @@
 
 function update(){
 
- var bootstrapValidator = $("#defaultForm").data('bootstrapValidator');
 
+
+ var bootstrapValidator = $("#defaultForm").data('bootstrapValidator');
+    bootstrapValidator.resetForm();
    bootstrapValidator.validate();
    if(!bootstrapValidator.isValid()){
      // 如果有验证未通过的项，给出提示，且终止后续逻辑
      showMessageWithTimeOut('表单有验证失败的项，请先处理后再执行此操作!',3);
+
      return;
    }
 
@@ -73,13 +76,8 @@ function check(){
                         　　invalid: 'glyphicon glyphicon-remove',
                         　　validating: 'glyphicon glyphicon-refresh'
                     },
-
-                    live: 'enabled',
-
                     fields: {
                         name: {
-                            enabled: true,
-                            message: '姓名验证失败',
                             validators: {
                                 notEmpty: {
                                     message: '用户名不能为空'
@@ -87,7 +85,6 @@ function check(){
                             }
                         },
                         phone: {
-                            enabled: true,
                             validators: {
                                 notEmpty: {
                                     message: '电话不能为空'
@@ -95,7 +92,6 @@ function check(){
                             }
                         },
                         id_card: {
-                            enabled: true,
                             validators: {
                                 notEmpty: {
                                     message: '证件号不能为空'
@@ -136,7 +132,7 @@ function check(){
 
         <h2 class="label label-info" style="font-size:20px;">用户/编辑</h2>
 
-        <div  class="form-group" id="main" style="padding-top:30px;" >
+        <div style="padding-top:30px;" >
 
             <form id="defaultForm" class="form-horizontal">
 
