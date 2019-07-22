@@ -23,7 +23,7 @@
     <script  language="javascript" type="text/javascript"  src="../js/common/HttpTools.js"></script>
     <script  language="javascript" type="text/javascript"  src="../js/common/base.js"></script>
 
-    <script  language="javascript" type="text/javascript"  src="../user/user.js"></script>
+    <script  language="javascript" type="text/javascript"  src="../todo/todo.js"></script>
 
     <title>用户编辑</title>
 
@@ -76,24 +76,17 @@ function check(){
                         　　validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
-                        name: {
+                        title: {
                             validators: {
                                 notEmpty: {
-                                    message: '用户名不能为空'
+                                    message: '标题不能为空'
                                 }
                             }
                         },
-                        phone: {
+                        content: {
                             validators: {
                                 notEmpty: {
-                                    message: '电话不能为空'
-                                }
-                            }
-                        },
-                        id_card: {
-                            validators: {
-                                notEmpty: {
-                                    message: '证件号不能为空'
+                                    message: '内容不能为空'
                                 }
                             }
                         }
@@ -129,7 +122,7 @@ function check(){
 
     <div  style="margin-left:100px; margin-top:100px; margin-right:100px; margin-bottom:60px; padding-top:10px">
 
-        <h2 class="label label-info" style="font-size:20px;">用户/编辑</h2>
+        <h2 class="label label-info" style="font-size:20px;">任务/编辑</h2>
 
         <div style="padding-top:30px;" >
 
@@ -145,28 +138,28 @@ function check(){
                 </div>
 
                 <div class="form-group">
-                    <label for="name" class="col-sm-2 control-label">姓名：</label>
+                    <label for="title" class="col-sm-2 control-label">标题：</label>
                     <div class="col-sm-10">
-                        <input type="text" id="name" name="name" value="" class="form-control" placeholder="姓名（必填）">
+                        <input type="text" id="title" name="title" value="" class="form-control" placeholder="标题（必填）">
                         <span class="form-control-feedback"></span>
                     </div>
                 </div>
 
 
                 <div class="form-group">
-                    <label for="phone" class="col-sm-2 control-label">电话：</label>
+                    <label for="content" class="col-sm-2 control-label">内容：</label>
                     <div class="col-sm-10">
-                        <input type="text" id="phone" name="phone" value="" class="form-control" placeholder="电话（必填）">
+                        <input type="text" id="content" name="content" value="" class="form-control" placeholder="内容（必填）">
                         <span class="form-control-feedback"></span>
                     </div>
                 </div>
 
 
-
                 <div class="form-group">
-                    <label for="id_card" class="col-sm-2 control-label">证件号：</label>
+                    <label for="parent_title" class="col-sm-2 control-label">父任务：</label>
                     <div class="col-sm-10">
-                        <input type="text" id="id_card" name="id_card" value="" class="form-control" placeholder="证件号（必填）">
+                        <input type="text" id="parent_title" name="content" value="" class="form-control" placeholder="">
+                        <input type="hidden" id="parent_id"  value="" >
                         <span class="form-control-feedback"></span>
                     </div>
                 </div>

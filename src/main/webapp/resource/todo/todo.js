@@ -25,9 +25,8 @@ function query(currentPage){
                                 var val=data[index];
                                 var tr='<tr class="active text-center"> ';
                                 tr+='<td> '+val.id+' </td>';
-                                tr+='<td> '+val.name+' </td>';
-                                tr+='<td> '+val.phone+' </td>';
-                                tr+='<td> '+val.id_card+' </td>';
+                                tr+='<td> '+val.title+' </td>';
+                                tr+='<td> '+val.content+' </td>';
                                 tr+='<td class="active text-left" style="width: 200px;"> '
                                 +'<button class="btn btn-default" type="button" data="'+val.id+'" onclick="del(this)">删除</button> '
                                 +'<button class="btn btn-default" type="button" data="'+val.id+'" onclick="edit(this)">编辑</button> '
@@ -58,7 +57,7 @@ function query(currentPage){
  	 };
 
    var json = '{"currentPage":'+currentPage+',"pageSize":'+PAGE_SIZE+'}';
-   async('POST',BASE_URL+'/user/page.do',json,handleSuccess,handleFailure);
+   async('POST',BASE_URL+'/todo/page.do',json,handleSuccess,handleFailure);
 
 };
 
@@ -146,7 +145,7 @@ function del(val){
      	 };
 
     var json = '{"id":'+id+'}';
-     async('POST',BASE_URL+'/user/delete.do',json,handleSuccess,handleFailure);
+     async('POST',BASE_URL+'/todo/delete.do',json,handleSuccess,handleFailure);
 };
 
 function edit(val){
@@ -154,7 +153,7 @@ function edit(val){
     var id=$(val).attr('data');
     SELECT_ID = id;
     localStorage.setItem("SELECT_ID",id);
-    window.location.href=BASE_URL+"/resource/user/edit.html";
+    window.location.href=BASE_URL+"/resource/todo/edit.html";
 };
 
 function getById(){
@@ -176,9 +175,9 @@ function getById(){
 
                     $("#id").attr("value",data.id);
                     $("#id").attr("readonly","true");
-                    $("#name").attr("value",data.name);
-                    $("#phone").attr("value",data.phone);
-                    $("#id_card").attr("value",data.id_card);
+                    $("#title").attr("value",data.title);
+                    $("#content").attr("value",data.content);
+                    $("#parent_id").attr("value",data.parent_id);
 
                  }else{
                     showMessage(response.message);
@@ -197,7 +196,7 @@ function getById(){
     var SELECT_ID = localStorage.getItem("SELECT_ID");
 
     var json = '{"id":'+SELECT_ID+'}';
-    async('POST',BASE_URL+'/user/get.do',json,handleSuccess,handleFailure);
+    async('POST',BASE_URL+'/todo/get.do',json,handleSuccess,handleFailure);
 
 }
 
