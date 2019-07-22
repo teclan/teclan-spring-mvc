@@ -144,14 +144,17 @@ function check(){
 
 
                 <div class="form-group">
-                    <label for="parent_title" class="col-sm-2 control-label">父任务：</label>
-                    <div class="col-sm-10">
-                        <input type="text" id="parent_title" name="content" value="" class="form-control" placeholder="">
-                        <input type="hidden" id="parent_id"  value="" >
-                        <span class="form-control-feedback"></span>
+                    <label for="parent_id" class="col-sm-2 control-label" >父任务：</label>
+
+                    <div class="dropdown col-sm-10">
+                        <input class="dropdown-toggle form-control" type="text" id="parent_id" value="" placeholder="-- 请选择 --" data-toggle="dropdown" >
+                        </input>
+                        <ul id="parent_id_list" class="dropdown-menu" >
+                            <li><a data="Action1_id" onclick="selected(this)">Action1</a></li>
+                            <li><a data="Action2_id" onclick="selected(this)">Action2</a></li>
+                        </ul>
                     </div>
                 </div>
-
             </form>
 
             </br>

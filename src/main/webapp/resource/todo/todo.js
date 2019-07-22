@@ -228,3 +228,11 @@ function doUpdate(json){
 
 };
 
+
+function selected(val){
+ var data=$(val).attr('data');
+ $("#parent_id").attr("value",data);
+ showMessageWithTimeOut(data,3);
+
+
+}
