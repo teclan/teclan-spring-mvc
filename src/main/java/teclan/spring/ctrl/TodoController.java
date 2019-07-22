@@ -81,7 +81,7 @@ public class TodoController {
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return ResultUtil.get(200, "删除失败",e.getMessage());
+            return ResultUtil.get(500, "删除失败",e.getMessage());
         }
 
     }
@@ -96,13 +96,13 @@ public class TodoController {
 
             int id = parameter.getIntValue("id");
 
-            List<Map<String,Object>> maps = jdbcTemplate.queryForList(String.format("select id,title,content,parent_id from todo where id=%s",id));
+            List<Map<String,Object>> maps = jdbcTemplate.queryForList(String.format("select a.id,a.title,a.content,a.parent_id,b.title parent_title from todo a left join todo b on a.parent_id=b.id where a.id=%s",id));
 
             return ResultUtil.get(200, "查询成功",maps.get(0));
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return ResultUtil.get(200, "查询失败",e.getMessage());
+            return ResultUtil.get(500, "查询失败",e.getMessage());
         }
     }
 
@@ -121,7 +121,7 @@ public class TodoController {
             String parent_id = parameter.getString("parent_id");
 
 
-            int row = jdbcTemplate.update("update todo set title=?,content=?,parent_id=? where id=?",content,content,parent_id,id);
+            int row = jdbcTemplate.update("update todo set title=?,content=?,parent_id=? where id=?",title,content,parent_id,id);
 
             if(row>0){
                 return ResultUtil.get(200, "修改成功");
@@ -131,7 +131,20 @@ public class TodoController {
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return ResultUtil.get(200, "修改失败",e.getMessage());
+            return ResultUtil.get(500, "修改失败",e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/getAllIdAndTitle")
+    @ResponseBody
+    public JSONObject getAllIdAndTitle(HttpServletRequest request, HttpServletResponse response) {
+        try {
+
+            List<Map<String, Object>> maps = jdbcTemplate.queryForList("select id,title from todo");
+            return ResultUtil.get(200, "查询成功",maps);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(500, "获取失败", e.getMessage());
         }
     }
 }

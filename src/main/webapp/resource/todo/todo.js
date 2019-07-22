@@ -178,6 +178,7 @@ function getById(){
                     $("#title").attr("value",data.title);
                     $("#content").attr("value",data.content);
                     $("#parent_id").attr("value",data.parent_id);
+                     $("#parent_title").attr("value",data.parent_title);
 
                  }else{
                     showMessage(response.message);
@@ -224,15 +225,61 @@ function doUpdate(json){
      	var handleFailure = function(o){
      	};
 
-     async('POST',BASE_URL+'/user/update.do',json,handleSuccess,handleFailure);
+     async('POST',BASE_URL+'/todo/update.do',json,handleSuccess,handleFailure);
 
 };
+
+
+function getAllIdAndTitle(){
+
+ var handleSuccess = function(response){
+            if(response !== undefined) {
+                try {
+
+                   if(response.code==200){
+                      var parent_id_list = document.getElementById('parent_id_list');
+                      var data=eval(response.data);
+
+                      var lists = '';
+                      $(data).each(function (index){
+                      var val=data[index];
+                      var row='<li><a data="'+val.id+'" onclick="selected(this)">'+val.title+'</a></li>';
+                      lists+= row;
+                      });
+                      parent_id_list.innerHTML = lists;
+                   }else{
+                       showMessage(response.message);
+                   }
+
+                } catch(e) {
+                    alert("error!"+e);
+                    return false;
+                }
+            }
+         };
+
+      	var handleFailure = function(response){
+
+      	    if(response.code==200){
+      	      handleSuccess(response);
+      	    }else{
+      	     showMessage('抱歉，获取父列表失败了');
+      	    }
+
+      	};
+
+      // 会进到 handleFailure 方法，有个异常: Error: Permission denied to access property "jQuery341098912248770553111"
+      // 调试时选择异“异常处暂停”即可看到
+      async('POST',BASE_URL+'/todo/getAllIdAndTitle.do',handleSuccess,handleFailure);
+
+
+}
 
 
 function selected(val){
  var data=$(val).attr('data');
  $("#parent_id").attr("value",data);
- showMessageWithTimeOut(data,3);
-
+  $("#parent_title").attr("value",val.text);
+ //$("#parent_title").attr("value",$(val).attr('text'));
 
 }
