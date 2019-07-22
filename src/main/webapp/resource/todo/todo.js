@@ -61,171 +61,32 @@ function query(currentPage){
 
 };
 
-
-function get(){
- query(currentPage);
-};
-
-// 访问首页
-function getFirst(){
-
-     if(isFirst){
-       showMessage( '当前已经是首页了！');
-        return ;
-     }
-
-    currentPage=1;
-    get(currentPage,PAGE_SIZE);
-};
-
-// 访问末页
-function getLast(){
-
-     if(isLast){
-        showMessage( '当前已经是末页了！');
-        return ;
-     }
-
-    currentPage=totalPages;
-    get(currentPage,PAGE_SIZE);
-};
-
-// 访问上一页
-function getPrevious(){
-    if(currentPage-1<1){
-       showMessage( '不存在上一页！');
-        return ;
-    }
-    currentPage=currentPage-1;
-    get(currentPage,PAGE_SIZE);
-};
-
-// 访问下一页
-function getNext(){
-    if(currentPage+1>totalPages){
-       showMessage( '不存在下一页！');
-        return ;
-    }
-    currentPage=currentPage+1;
-    get(currentPage,PAGE_SIZE);
-};
-
-function flushPageInfo(pageInfo){
-   currentPage=pageInfo.currentPage;
-   totals=pageInfo.totals;
-   totalPages=pageInfo.totalPages;
-   isFirst=pageInfo.isFirst;
-   isLast=pageInfo.isLast;
-   $('#info').text('第'+currentPage+'页/共'+totalPages+'页/总数'+totals);
-};
-
 function del(val){
-   // var id = eval(val.attributes.data.nodeValue);
-    var id=$(val).attr('data');
-
-    var handleSuccess = function(response){
-                if(response !== undefined) {
-                        try {
-
-                           if(response.code==200){
-                               showMessage(response.message);
-                               get();
-                           }else{
-                                showMessage(response.message);
-                           }
-
-                        } catch(e) {
-                            alert("error!"+e);
-                            return false;
-                        }
-               }
-          };
-
-     	 var handleFailure = function(o){
-     	 };
-
-    var json = '{"id":'+id+'}';
-     async('POST',BASE_URL+'/todo/delete.do',json,handleSuccess,handleFailure);
+  commonDel(val,'/todo/delete.do');
 };
 
 function edit(val){
-    // var id = eval(val.attributes.data.nodeValue);
-    var id=$(val).attr('data');
-    SELECT_ID = id;
-    localStorage.setItem("SELECT_ID",id);
-    window.location.href=BASE_URL+"/resource/todo/edit.html";
+     getEditPage(val,"/resource/todo/edit.html");
 };
 
+// 用于详细页面的设值
+function setDataForDetail(data){
+  $("#id").attr("value",data.id);
+  $("#id").attr("readonly","true");
+  $("#title").attr("value",data.title);
+  $("#content").attr("value",data.content);
+  $("#parent_id").attr("value",data.parent_id);
+  $("#parent_title").attr("value",data.parent_title);
+}
+
+
 function getById(){
-
-    var handleSuccess = function(response){
-         if(response !== undefined) {
-             try {
-
-                 if(response.code==200){
-                    showMessage(response.message);
-
-                    var data = response.data;
-
-                    // 先将输入框中缓存的输入值清空，否则如果存在缓存的话，看不出是后台返回的时间还是未提交的数据
-                   // $('#id').val('');
-                   // $('#name').val('');
-                   // $('#phone').val('');
-                   // $('#id_card').val('');
-
-                    $("#id").attr("value",data.id);
-                    $("#id").attr("readonly","true");
-                    $("#title").attr("value",data.title);
-                    $("#content").attr("value",data.content);
-                    $("#parent_id").attr("value",data.parent_id);
-                     $("#parent_title").attr("value",data.parent_title);
-
-                 }else{
-                    showMessage(response.message);
-                 }
-
-             } catch(e) {
-                 alert("error!"+e);
-                 return false;
-             }
-         }
-    };
-
-    var handleFailure = function(o){
-    };
-
-    var SELECT_ID = localStorage.getItem("SELECT_ID");
-
-    var json = '{"id":'+SELECT_ID+'}';
-    async('POST',BASE_URL+'/todo/get.do',json,handleSuccess,handleFailure);
-
+    getDetail('/todo/get.do');
 }
 
 
 function doUpdate(json){
-
-        var handleSuccess = function(response){
-           if(response !== undefined) {
-               try {
-
-                  if(response.code==200){
-                      showMessage(response.message);
-                         //get();
-                  }else{
-                          showMessage(response.message);
-                  }
-
-               } catch(e) {
-                   alert("error!"+e);
-                   return false;
-               }
-           }
-        };
-
-     	var handleFailure = function(o){
-     	};
-
-     async('POST',BASE_URL+'/todo/update.do',json,handleSuccess,handleFailure);
+      commonUpdate('/todo/update.do',json);
 
 };
 
@@ -275,11 +136,10 @@ function getAllIdAndTitle(){
 
 }
 
-
+// 下拉选项设值使用
 function selected(val){
  var data=$(val).attr('data');
  $("#parent_id").attr("value",data);
   $("#parent_title").attr("value",val.text);
  //$("#parent_title").attr("value",$(val).attr('text'));
-
 }
