@@ -75,43 +75,16 @@ function flushPageInfo(pageInfo){
    $('#info').text('第'+currentPage+'页/共'+totalPages+'页/总数'+totals);
 };
 
-
-
-// 通用的删除方法
-function commonDel(val,url){
-
-    var id=$(val).attr('data');
-
-    var handleSuccess = function(response){
-                if(response !== undefined) {
-                        try {
-
-                           if(response.code==200){
-                               showMessage(response.message);
-                               get();
-                           }else{
-                                showMessage(response.message);
-                           }
-
-                        } catch(e) {
-                            alert("error!"+e);
-                            return false;
-                        }
-               }
-          };
-
-     	 var handleFailure = function(o){
-     	 };
-
-    var json = '{"id":'+id+'}';
-     async('POST',BASE_URL+url,json,handleSuccess,handleFailure);
-};
-
 // 获取编辑页面
 function getEditPage(val,url){
     var id=$(val).attr('data');
     SELECT_ID = id;
     localStorage.setItem("SELECT_ID",id);
+    window.location.href=BASE_URL+url;
+};
+
+// 获取普通页面
+function getPage(url){
     window.location.href=BASE_URL+url;
 };
 
@@ -175,4 +148,61 @@ function commonUpdate(url,json){
 
      async('POST',BASE_URL+url,json,handleSuccess,handleFailure);
 
+};
+
+// 通用的添加方法
+function commonAdd(url,json){
+        var handleSuccess = function(response){
+           if(response !== undefined) {
+               try {
+
+                  if(response.code==200){
+                      showMessage(response.message);
+                         //get();
+                  }else{
+                          showMessage(response.message);
+                  }
+
+               } catch(e) {
+                   alert("error!"+e);
+                   return false;
+               }
+           }
+        };
+
+     	var handleFailure = function(o){
+     	};
+
+     async('POST',BASE_URL+url,json,handleSuccess,handleFailure);
+
+};
+
+// 通用的删除方法
+function commonDel(val,url){
+
+    var id=$(val).attr('data');
+
+    var handleSuccess = function(response){
+                if(response !== undefined) {
+                        try {
+
+                           if(response.code==200){
+                               showMessage(response.message);
+                               get();
+                           }else{
+                                showMessage(response.message);
+                           }
+
+                        } catch(e) {
+                            alert("error!"+e);
+                            return false;
+                        }
+               }
+          };
+
+     	 var handleFailure = function(o){
+     	 };
+
+    var json = '{"id":'+id+'}';
+     async('POST',BASE_URL+url,json,handleSuccess,handleFailure);
 };

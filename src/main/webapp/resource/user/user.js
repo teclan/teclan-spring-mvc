@@ -70,6 +70,10 @@ function edit(val){
     getEditPage(val,"/resource/user/edit.html");
 };
 
+function add(){
+    getPage("/resource/user/add.html");
+};
+
 // 用于详细页面的设值
 function setDataForDetail(data){
   $("#id").attr("value",data.id);
@@ -85,5 +89,9 @@ function getById(){
 
 function doUpdate(json){
      commonUpdate('/user/update.do',json);
+};
+
+function doAdd(json){
+     commonAdd('/user/add.do',json);
 };
 

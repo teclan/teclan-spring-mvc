@@ -153,4 +153,32 @@ public class UserController {
             return ResultUtil.get(200, "修改失败",e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/add")
+    @ResponseBody
+    public JSONObject add(HttpServletRequest request, HttpServletResponse response) {
+        try {
+
+            String json = HttpTool.readJSONString(request);
+            JSONObject parameter = JSON.parseObject(json);
+
+            String id = parameter.getString("id");
+            String name = parameter.getString("name");
+            String phone = parameter.getString("phone");
+            String idCard = parameter.getString("id_card");
+
+
+            int row = jdbcTemplate.update("insert into user_info (id,code,name,phone,id_card) values (?,?,?,?,?) ",id,id,name,phone,idCard);
+
+            if(row>0){
+                return ResultUtil.get(200, "添加成功");
+            }else{
+                return ResultUtil.get(403, "添加失败");
+            }
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(200, "添加失败",e.getMessage());
+        }
+    }
 }
