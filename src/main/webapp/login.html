@@ -44,18 +44,16 @@
 
 </head>
 
-
-
-
-
-
-
-<body>
+<body id="body">
 
 <script type="text/javascript">
 
-    function doLogin(){
+    $(function () {
+       setDefaultCopyright('copyright');
+    });
 
+
+    function doLogin(){
       var id = $('#id').val();
       var password = $('#password').val();
       login(id,password);
@@ -89,6 +87,11 @@
 
           </div>
 
+          </br>
+          </br>
+          </br>
+          </br>
+          <div id="copyright" style="text-align:center"></div>
 
       </div>
 

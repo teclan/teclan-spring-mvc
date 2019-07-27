@@ -16,7 +16,7 @@
 
 
 </head>
-<body>
+<body id="body">
 
 <script type="text/javascript">
 
@@ -25,6 +25,7 @@
         $("#home").attr("href",BASE_URL+"/resource/home/home.html");
         $("#user").attr("href",BASE_URL+"/resource/user/userList.html");
         $('#user').css('font-size','25px');
+        //initPage();
 
     });
 
@@ -111,7 +112,7 @@ function check(){
 
     <div  style="margin-left:100px; margin-top:100px; margin-right:100px; margin-bottom:60px; padding-top:10px">
 
-        <h2 class="label label-info" style="font-size:20px;">用户/编辑</h2>
+        <h2 class="label label-info" style="font-size:20px;">用户/添加</h2>
 
         <div style="padding-top:30px;" >
 
@@ -160,7 +161,6 @@ function check(){
         </div>
         <div  style="margin-left:647px;;padding-top:10px;">
             <button type="button" class="btn btn-default" onclick="window.history.back(-1);">返回</button>
-
             <button type="button" class="btn btn-default" onclick="save()">添加</button>
 
         </div>

@@ -16,7 +16,7 @@
 
 
 </head>
-<body>
+<body id="body" >
 
 <script type="text/javascript">
 
@@ -26,6 +26,7 @@
         $("#user").attr("href",BASE_URL+"/resource/user/userList.html");
         $("#todo").attr("href",BASE_URL+"/resource/todo/todoList.html");
         $('#todo').css('font-size','25px');
+        initPage();
         getById();
     });
 

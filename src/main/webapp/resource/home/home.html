@@ -14,7 +14,7 @@
 
     </style>
 </head>
-<body>
+<body id="body">
 
 
 <script type="text/javascript">
@@ -24,6 +24,7 @@
         $("#user").attr("href",BASE_URL+"/resource/user/userList.html");
         $("#todo").attr("href",BASE_URL+"/resource/todo/todoList.html");
         $('#home').css('font-size','25px')
+        initPage();
     });
 
     $('.dropdown-toggle').dropdown();
@@ -56,8 +57,5 @@
         <p>abc</p>
     </div>
 </div>
-
-
-
 </body>
 </html>

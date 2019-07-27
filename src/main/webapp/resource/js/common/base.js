@@ -206,3 +206,23 @@ function commonDel(val,url){
     var json = '{"id":'+id+'}';
      async('POST',BASE_URL+url,json,handleSuccess,handleFailure);
 };
+
+// 获取版权信息
+function getCopyright(){
+    return COPY_RIGHT;
+}
+
+
+
+// 设置版权
+function setDefaultCopyright(id){
+   if(id==null){
+     id='body';
+   }
+   document.getElementById(id).innerHTML += COPY_RIGHT_HTML;
+}
+
+// 初始化页面
+function initPage(){
+  setDefaultCopyright();
+}

@@ -16,7 +16,7 @@
 
 
 </head>
-<body>
+<body id="body">
 
 <script type="text/javascript">
 
@@ -25,6 +25,7 @@
         $("#user").attr("href",BASE_URL+"/resource/user/userList.html");
         $("#todo").attr("href",BASE_URL+"/resource/todo/todoList.html");
         $('#user').css('font-size','25px');
+        initPage();
         get();
     });
 
@@ -86,6 +87,8 @@
         <li><a href="#" id="last" onclick="getLast()">末页</a></li>
     </ul>
 </nav>
+
+
 
 </body>
 </html>
