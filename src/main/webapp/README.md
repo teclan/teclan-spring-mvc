@@ -1,0 +1,252 @@
+# 前端开发文档
+
+## 后端跟路径配置
+
+修改`resource\js\common\config.js`的`BASE_URL`项，形如:
+
+``` 
+// 后端服务跟路径
+var BASE_URL="/teclan-spring-mvc";
+```
+
+## 分页大小
+
+
+修改`resource\js\common\config.js`的`PAGE_SIZE`项，形如:
+
+``` 
+// 全局分页大小
+var PAGE_SIZE=5";
+```
+
+
+## 页脚（页码）
+
+我们对页脚做一些统一的封装，你仅仅需要少量的代码，就可以使用配置好的页脚效果。
+
+在`resource\js\common\config.js`的`FOOTER_HTML`项，配置了全局的页脚代码，
+统一格式，在任何需要的地方引入相关函数即可，代码如下:
+
+``` 
+<nav aria-label="...">
+  <ul class="pager">
+      <li><a href="#" id="first" onclick="getFirst()">首页</a></li>
+      <li><a href="#" id="previous" onclick="getPrevious()">上一页</a></li>
+      <li><a href="#" id="info"></a></li>
+      <li><a href="#" id="next" onclick="getNext()">下一页</a></li>
+      <li><a href="#" id="last" onclick="getLast()">末页</a></li>
+      </ul>'
+  </nav>';
+```
+
+在每次更新列表完成后，请调用以下方法（该方法在`resource\js\common\base.js`中定义 ）
+刷新页脚信息（注意 `pageInfo`的格式,可自定义相关代码）:
+
+``` 
+// 刷新当前页面信息
+function flushPageInfo(pageInfo){
+   currentPage=pageInfo.currentPage;
+   totals=pageInfo.totals;
+   totalPages=pageInfo.totalPages;
+   isFirst=pageInfo.isFirst;
+   isLast=pageInfo.isLast;
+   $('#info').text('第'+currentPage+'页/共'+totalPages+'页/总数'+totals);
+};
+```
+
+在页脚代码中，涉及到的点击事件绑定的方法，均在`resource\js\common\base.js`中定义（请前往查阅详细代码），
+这些方法，最终都进入到`query(currentPage)`方法，该方法每个业务需要单独实现，主要是用于填充列表，即关于
+列表的操作，你仅需要实现`query(currentPage)`方法，相关的操作列（编辑和删除）和页脚代码你都不需要关心，
+这些已经自动帮你完成，你仅仅需要在你的列表下方顶一个`id`为`footer`的`div`，这个容器将用于插入页脚代码。
+完成这些以后，你只需要在页面初始化的时候调用`initPage()`方法即可（该方法在`resource\js\common\base.js`
+中定义 ）。
+
+
+## 版权
+
+修改`resource\js\common\config.js`的`COPY_RIGHT`项，形如:
+
+``` 
+// 版权
+var  COPY_RIGHT = "©2019 Teclan 广西xxxx公司";
+```
+
+
+### 示例
+
+下面给出一个用户列表页面涉及到的代码
+
+文件 `userList.html`:
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+    <!-- 这里引用公共的 css 文件（必须） -->
+    <link rel="stylesheet" href="../css/common/include.css">
+    
+    <!-- 这里引用公共的 js 文件（必须） -->
+    <script  language="javascript" type="text/javascript"  src="../js/common/include.js"></script>
+
+    <!-- 这里引用你的 js 文件 -->
+    <script  language="javascript" type="text/javascript"  src="user.js"></script>
+
+    <title>用户管理</title>
+
+
+</head>
+<body id="body">
+
+<script type="text/javascript">
+
+    $(function () {
+        <!-- 页面初始化，参考 base.js 中 initPage() 的定义-->
+        initPage();
+        <!-- 获取当前页，参考 base.js 中 get() 的定义-->
+        get();
+    });
+
+
+
+</script>
+
+<table class="table table-hover table-bordered" id="userList">
+    <thead>
+        <tr class="success">
+            <th class="text-center">ID</th>
+            <th class="text-center">姓名</th>
+            <th class="text-center">电话</th>
+            <th class="text-center">证件号</th>
+            <th class="text-center">操作</th>
+        </tr>
+    </thead>
+
+    <tbody id="tbody" class="active">
+
+    </tbody>
+    </tr>
+
+</table>
+
+<!-- 用于插入页脚的容器 -->
+<div id="footer"></div>
+
+</body>
+</html>
+
+```
+
+文件 `user.js`:
+
+``` 
+// ---------------------------------------------------------
+// 这里是页脚相关的代码，每个页面复制一份即可，用于缓存页脚信息
+var currentPage=1;
+var totals=0;
+var totalPages=0;
+var isFirst=false;
+var isLast=false;
+
+// ---------------------------------------------------------
+
+// 这个是列表页面必须实现的方法，每个业务单独实现，用于填充列表数据和刷新页脚
+function query(currentPage){
+
+     var result;
+
+     var handleSuccess = function(response){
+            if(response !== undefined) {
+                    try {
+
+                       if(response.code==200){
+
+                            // ------------------------------------------------------------------------------------------------------
+                            // 往列表中填充数据
+                            var data=eval(response.data);
+
+                            var tbody = document.getElementById('tbody');
+
+                            var tableContent='';
+                            $(data).each(function (index){
+                                var val=data[index];
+                                var tr='<tr class="active text-center"> ';
+                                tr+='<td> '+val.id+' </td>';
+                                tr+='<td> '+val.name+' </td>';
+                                tr+='<td> '+val.phone+' </td>';
+                                tr+='<td> '+val.id_card+' </td>';
+                                tr+='<td class="active text-left" style="width: 200px;"> '
+                                +'<button class="btn btn-default" type="button" data="'+val.id+'" onclick="del(this)">删除</button> '
+                                +'<button class="btn btn-default" type="button" data="'+val.id+'" onclick="edit(this)">编辑</button> '
+                                +' </td>';
+
+                                tr+='</tr>';
+
+                                tableContent+=tr;
+                            });
+                            tbody.innerHTML = tableContent;
+                            // ------------------------------------------------------------------------------------------------------
+                                                        
+
+                            // -----------------------------------
+                            // 弹窗提示信息，1s 后弹窗自动消失（可选）
+                            showMessage(response.message);
+                            // -----------------------------------
+                            
+
+                            // -----------------------------------
+                            // 刷新页脚信息，如果确定只有一页，可忽略
+                            var pageInfo=eval(response.pageInfo);
+                            flushPageInfo(pageInfo);
+                            // ---------------------------------
+                       }else{
+                            showMessage(response.message);
+                       }
+
+                    } catch(e) {
+                        alert("error!"+e);
+                        return false;
+                    }
+           }
+      };
+
+ 	 var handleFailure = function(o){
+ 	 };
+
+   var json = '{"currentPage":'+currentPage+',"pageSize":'+PAGE_SIZE+'}';
+   async('POST',BASE_URL+'/user/page.do',json,handleSuccess,handleFailure);
+
+};
+
+// 删除，commonDel 方法在 base.js 中定义
+function del(val){
+     // 删除用户的url为 /user/delete.do 
+     commonDel(val,'/user/delete.do');
+};
+
+// 编辑，getEditPage 方法在 base.js 中定义
+function edit(val){
+    // 编辑用户的页面为 /resource/user/edit.html
+    getEditPage(val,"/resource/user/edit.html");
+};
+
+// 编辑，getPage 方法在 base.js 中定义
+function add(){
+
+    // 添加用户的页面为 /resource/user/edit.html
+    getPage("/resource/user/add.html");
+};
+
+// 用于详细页面的设值
+function setDataForDetail(data){
+  $("#id").attr("value",data.id);
+  $("#id").attr("readonly","true");
+  $("#name").attr("value",data.name);
+  $("#phone").attr("value",data.phone);
+  $("#id_card").attr("value",data.id_card);
+}
+
+```
