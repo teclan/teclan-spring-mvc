@@ -1,0 +1,18 @@
+2019/07/27 09:41:47 [error] 7656#8400: *1 directory index of "E:\Apps\nginx-1.17.2/webapp/" is forbidden, client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "localhost"
+2019/07/27 09:41:47 [error] 7656#8400: *1 CreateFile() "E:\Apps\nginx-1.17.2/webapp/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost"
+2019/07/27 09:44:19 [error] 4528#8520: *1 directory index of "E:\Apps\nginx-1.17.2/webapp/" is forbidden, client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "localhost"
+2019/07/27 09:44:20 [error] 4528#8520: *1 CreateFile() "E:\Apps\nginx-1.17.2/webapp/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost"
+2019/07/27 09:46:29 [error] 4528#8520: *8 CreateFile() "E:\Apps\nginx-1.17.2/webapp/teclan-spring-mvc/user/login.do" failed (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "POST /teclan-spring-mvc/user/login.do HTTP/1.1", host: "localhost", referrer: "http://localhost/login.html"
+2019/07/27 09:46:33 [error] 4528#8520: *8 CreateFile() "E:\Apps\nginx-1.17.2/webapp/teclan-spring-mvc/user/login.do" failed (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "POST /teclan-spring-mvc/user/login.do HTTP/1.1", host: "localhost", referrer: "http://localhost/login.html"
+2019/07/27 09:51:04 [notice] 8204#8344: signal process started
+2019/07/27 09:51:17 [error] 8632#6460: *2 CreateFile() "E:\Apps\nginx-1.17.2/webapp/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost"
+2019/07/27 09:51:22 [error] 8632#6460: *2 CreateFile() "E:\Apps\nginx-1.17.2/webapp/teclan-spring-mvc/user/login.do" failed (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "POST /teclan-spring-mvc/user/login.do HTTP/1.1", host: "localhost", referrer: "http://localhost/login.html"
+2019/07/27 09:52:34 [emerg] 3624#9720: invalid host in upstream "localhost:8080/teclan-spring-mvc/" in E:\Apps\nginx-1.17.2/conf/nginx.conf:36
+2019/07/27 09:52:45 [emerg] 9804#9484: invalid host in upstream "localhost:8080/teclan-spring-mvc" in E:\Apps\nginx-1.17.2/conf/nginx.conf:36
+2019/07/27 09:54:15 [emerg] 8700#9048: host not found in upstream "teclan-spring-mvc" in E:\Apps\nginx-1.17.2/conf/nginx.conf:51
+2019/07/27 09:55:30 [emerg] 9680#6296: host not found in upstream "teclan-spring-mvc" in E:\Apps\nginx-1.17.2/conf/nginx.conf:51
+2019/07/27 09:56:02 [notice] 9192#9196: signal process started
+2019/07/27 09:56:35 [notice] 7828#9660: signal process started
+2019/07/27 09:57:28 [notice] 6556#576: signal process started
+2019/07/27 09:57:28 [error] 6556#576: CreateFile() "E:\Apps\nginx-1.17.2/logs/nginx.pid" failed (2: The system cannot find the file specified)
+2019/07/27 09:59:28 [notice] 9948#9480: signal process started
