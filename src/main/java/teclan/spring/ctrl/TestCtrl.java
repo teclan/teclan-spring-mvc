@@ -18,15 +18,6 @@ import teclan.spring.service.TestService;
 import teclan.spring.util.HttpTool;
 import teclan.spring.util.ResultUtil;
 
-/**
- * 修改维修单和修改处警单反馈接口
- * 
- * @author teclan
- * 
- *         email: tbj621@163.com
- *
- *         2017年10月21日
- */
 @Controller
 public class TestCtrl {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestCtrl.class);
