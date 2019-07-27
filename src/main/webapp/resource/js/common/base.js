@@ -212,8 +212,6 @@ function getCopyright(){
     return COPY_RIGHT;
 }
 
-
-
 // 设置版权
 function setDefaultCopyright(id){
    if(id==null){
@@ -222,7 +220,20 @@ function setDefaultCopyright(id){
    document.getElementById(id).innerHTML += COPY_RIGHT_HTML;
 }
 
+// 设置默认页脚（页码信息）
+function setDefaultFooter(){
+
+  var el = document.getElementById('footer');
+  if(el!=null){
+   el.innerHTML += FOOTER_HTML;
+  }
+
+}
+
 // 初始化页面
 function initPage(){
   setDefaultCopyright();
+  setDefaultFooter();
 }
+
+
