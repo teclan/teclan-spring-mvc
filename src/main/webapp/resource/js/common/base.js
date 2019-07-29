@@ -212,20 +212,29 @@ function getCopyright(){
     return COPY_RIGHT;
 }
 
-// 设置版权
-function setDefaultCopyright(id){
+// 设置分页
+function setDefaultPagination(id){
    if(id==null){
-     id='body';
+    id='default_pagination';
    }
-   document.getElementById(id).innerHTML += COPY_RIGHT_HTML;
+
+   var doc = document.getElementById(id);
+
+   if(doc!=null){
+      doc.innerHTML = GLOBAL_PAGINATION_HTML;
+   }
+
 }
 
-// 设置默认页脚（页码信息）
-function setDefaultFooter(){
+// 设置默认页脚（版权等）
+function setDefaultFooter(id){
 
-  var el = document.getElementById('footer');
-  if(el!=null){
-    el.innerHTML += FOOTER_HTML;
+  if(id==null){
+    id = 'body';
+  }
+  var doc = document.getElementById(id);
+  if(doc!=null){
+    doc.innerHTML += GLOBAL_FOOTER_HTML;
   }
 
 }
@@ -234,7 +243,7 @@ function setDefaultFooter(){
 function setNavigation(){
   var el = document.getElementById('navigation');
   if(el!=null){
-    el.innerHTML += NAVIGATION_HTML;
+    el.innerHTML = NAVIGATION_HTML;
   }
 
 }
@@ -321,7 +330,7 @@ function initPage(){
   setNavigation();
   // 设置页脚
   setDefaultFooter();
-  // 设置版权
-  setDefaultCopyright();
+  // 设置分页
+  setDefaultPagination();
 
 }

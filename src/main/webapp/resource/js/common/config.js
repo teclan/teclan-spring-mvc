@@ -14,10 +14,11 @@ $._messengerDefaults = {
 // 版权
 var  COPY_RIGHT = "©2019 Teclan 广西xxxx公司";
 
-var COPY_RIGHT_HTML ='<div id="default_copyright" style="text-align:center">'+COPY_RIGHT+'</div>';
+// 全局页脚信息，一般含版权，联系方式等
+var GLOBAL_FOOTER_HTML ='<footer id="default_footer" style="text-align:center">'+COPY_RIGHT+'</footer>';
 
-// 全局的页脚信息（页码信息）
-var FOOTER_HTML='<nav aria-label="..."> '
+// 全局的分页代码
+var GLOBAL_PAGINATION_HTML='<nav aria-label="..."> '
                 +'   <ul class="pager"> '
                 +'         <li><a href="#" id="first" onclick="getFirst()">首页</a></li> '
                 +'         <li><a href="#" id="previous" onclick="getPrevious()">上一页</a></li> '
