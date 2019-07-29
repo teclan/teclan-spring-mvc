@@ -78,10 +78,14 @@ var  COPY_RIGHT = "©2019 Teclan 广西xxxx公司";
 ```json
 [
 
-  {"id": "home","name": "首页","dropdown": false},
-  {"id": "user","name": "用户","dropdown": false},
-  {"id": "todo","name": "任务","dropdown": false},
-  {"id": "dropdown1","name": "下拉测试","dropdown": true,"dropdown_items":[{"id": "first","name": "firstName","dropdown": false},{"id": "second","name": "secondName","dropdown": false}]}
+  {"id": "home","name": "首页","dropdown": false,"url": "/resource/home/home.html"},
+  {"id": "user","name": "用户","dropdown": false,"url": "/resource/user/userList.html"},
+  {"id": "todo","name": "任务","dropdown": false,"url": "/resource/todo/todoList.html"},
+  {"id": "dropdown1","name": "下拉测试","dropdown": true,"url":"",
+                  "dropdown_items":[
+                    {"id": "first","name": "firstName","dropdown": false,"url":""},
+                    {"id": "second","name": "secondName","dropdown": false,"url":""}]
+  }
 ]
 
 ```
