@@ -225,15 +225,28 @@ function setDefaultFooter(){
 
   var el = document.getElementById('footer');
   if(el!=null){
-   el.innerHTML += FOOTER_HTML;
+    el.innerHTML += FOOTER_HTML;
+  }
+
+}
+
+// 设置导航
+function setNavigation(){
+  var el = document.getElementById('navigation');
+  if(el!=null){
+    el.innerHTML += NAVIGATION_HTML;
   }
 
 }
 
 // 初始化页面
 function initPage(){
-  setDefaultCopyright();
+  // 设置导航
+  setNavigation();
+  // 设置页脚
   setDefaultFooter();
+  // 设置版权
+  setDefaultCopyright();
 }
 
 

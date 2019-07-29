@@ -71,6 +71,34 @@ function flushPageInfo(pageInfo){
 var  COPY_RIGHT = "©2019 Teclan 广西xxxx公司";
 ```
 
+## 导航
+
+修改`resource\js\common\config.js`的`NAVIGATION_HTML`项，形如:
+
+``` 
+ <nav class="nav navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div id="menu" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <a id="home" chref="" class="navbar-brand">首页</a>
+                    <li><a id="user" class="navbar-brand active"  href="">用户</a></li>
+                    <li><a id="todo" class="navbar-brand" href="#">任务</a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        three<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">first</a></li>
+                            <li><a href="#">second</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+```
+
+> 注意：在修改导航的跳转地址前，必须先调用`initPage()`初始化页面，因为该初始化页面
+的方法是不含调整地址，如果先设置跳转地址再初始化页面，跳转地址会被置空，导致跳转失败。
+
 
 ### 示例
 
