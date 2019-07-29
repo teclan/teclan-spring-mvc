@@ -239,14 +239,90 @@ function setNavigation(){
 
 }
 
+// 构造导航代码
+function generateNavigationHtml(configs ){
+
+   var code = '<nav class="nav navbar-inverse navbar-fixed-top"> '
+                    +'<div class="container"> '
+                    +'<div id="menu" class="collapse navbar-collapse"> '
+                    +'  <ul class="nav navbar-nav"> ';
+
+
+   for(var i in configs){
+        var item = configs[i];
+        var id = item.id; // 元素id
+        var name = item.name; // 导航名称
+        var dropdown = item.dropdown; // 是否存在下拉项
+
+
+        if(dropdown==true){
+
+             var dropdown_items = item.dropdown_items;
+
+             code += '              <li class="dropdown" id="'+id+'"> ';
+             code += '                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"> ';
+             code += '                      '+name+' ';
+             code += '                      <span class="caret"></span> ';
+             code += '                  </a> ';
+             code += '                  <ul class="dropdown-menu"> ';
+
+             for(var index in dropdown_items){
+
+                 var id = dropdown_items[index].id; // 元素id
+                 var name = dropdown_items[index].name; // 导航名称
+                 code += '                      <li><a href="#" id='+id+'>'+name+'</a></li> ';
+             }
+
+              code += '                  </ul> ';
+               code += '              </li> ';
+
+        }else{
+             code += '              <li><a id="'+id+'" class="navbar-brand"  href="">'+name+'</a></li> ';
+        }
+   }
+
+
+    code += '      </ul> ';
+    code += '  </div> ';
+    code += '</div> ';
+    code += '</nav>';
+
+    return code;
+
+
+}
+
 // 初始化页面
 function initPage(){
+
+$.ajaxSettings.async = false;
   // 设置导航
   setNavigation();
   // 设置页脚
   setDefaultFooter();
   // 设置版权
   setDefaultCopyright();
+
 }
 
+
+// 读取菜单配置文件
+function setNavigation(){
+
+    $.getJSON("../json/menu.json", function (data,status){
+        if( status=='success'){
+          var code =  generateNavigationHtml(data);
+
+            var el = document.getElementById('navigation');
+              if(el!=null){
+                el.innerHTML = code;
+              }
+
+            return data;
+        }else{
+             console.log("json/menu.json文件读取失败："+status);
+             return false;
+        }
+    });
+}
 
