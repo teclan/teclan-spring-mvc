@@ -292,20 +292,6 @@ function generateNavigationHtml(configs ){
 
 }
 
-// 初始化页面
-function initPage(){
-
-$.ajaxSettings.async = false;
-  // 设置导航
-  setNavigation();
-  // 设置页脚
-  setDefaultFooter();
-  // 设置版权
-  setDefaultCopyright();
-
-}
-
-
 // 读取菜单配置文件
 function setNavigation(){
 
@@ -326,3 +312,15 @@ function setNavigation(){
     });
 }
 
+// 初始化页面
+function initPage(){
+
+  $.ajaxSettings.async = false;
+  // 设置导航
+  setNavigation();
+  // 设置页脚
+  setDefaultFooter();
+  // 设置版权
+  setDefaultCopyright();
+
+}

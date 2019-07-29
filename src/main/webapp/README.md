@@ -73,28 +73,26 @@ var  COPY_RIGHT = "©2019 Teclan 广西xxxx公司";
 
 ## 导航
 
-修改`resource\js\common\config.js`的`NAVIGATION_HTML`项，形如:
+菜单项，在`resource\json\menu.json` 文件中配置，支持并排的菜单和下拉菜单，其内容配置如下：
 
-``` 
- <nav class="nav navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div id="menu" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <a id="home" chref="" class="navbar-brand">首页</a>
-                    <li><a id="user" class="navbar-brand active"  href="">用户</a></li>
-                    <li><a id="todo" class="navbar-brand" href="#">任务</a></li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        three<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">first</a></li>
-                            <li><a href="#">second</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+```json
+[
+
+  {"id": "home","name": "首页","dropdown": false},
+  {"id": "user","name": "用户","dropdown": false},
+  {"id": "todo","name": "任务","dropdown": false},
+  {"id": "dropdown1","name": "下拉测试","dropdown": true,"dropdown_items":[{"id": "first","name": "firstName","dropdown": false},{"id": "second","name": "secondName","dropdown": false}]}
+]
+
 ```
+
+我们将根据这个配置文件，自动生成导航栏，如果你想使用这个导航卡，仅需要在你的body里面添加以下代码即可:
+
+```html
+<div id="navigation"></div>
+
+```
+关于如何读取配置文件和生成导航栏的代码，请参考 `initPage()`->`setNavigation()`;
 
 > 注意：在修改导航的跳转地址前，必须先调用`initPage()`初始化页面，因为该初始化页面
 的方法是不含调整地址，如果先设置跳转地址再初始化页面，跳转地址会被置空，导致跳转失败。
