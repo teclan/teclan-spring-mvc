@@ -16,10 +16,7 @@ import teclan.spring.util.ResultUtil;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -37,11 +34,17 @@ public class UserController {
             String json = HttpTool.readJSONString(request);
             JSONObject parameter = JSON.parseObject(json);
 
+            Map<String,Object> map = jdbcTemplate.queryForMap("select * from user_info where id=?",10);
+            map.put("USER",map.get("code"));
+            map.put("TOKEN",new Date().getTime());
+
+            return ResultUtil.get(200, "成功",map);
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(500, e.getMessage());
         }
-        return ResultUtil.get(200, "成功");
+
     }
 
 

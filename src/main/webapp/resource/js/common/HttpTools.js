@@ -1,78 +1,54 @@
+
+// 异步请求，参数都在url中，请求体不带参数
 function async(method,url,suc,fai){
-	var result="";
-	$.ajax({
-        type: method,
-        url:url,
-        async:true,
-
-        success: function (res) {
-		   result =  suc(res);
-       },
-
-       failure: function (res) {
-    	   result =  fai(res);
-       }
-
-    });
-
-    return result;
+    return  simpleRequest(method,true,url,suc,fai);;
 
 };
 
+// 同步请求，参数都在url中，请求体不带参数
+function sync1(method,url,suc,fai){
+   return simpleRequest(method,false,url,suc,fai);
+};
 
+
+// 异步请求，请求体参数为json格式
 function async(method,url,json,suc,fai){
-	var result="";
-	$.ajax({
-        type: method,
-        contentType: "application/json;charset=utf-8",
-        url:url,
-        data:json,
-        async:true,
-
-        success: function (res) {
-		   result =  suc(res);
-       },
-
-       failure: function (res) {
-    	   result =  fai(res);
-       }
-
-    });
-
-    return result;
-
+     return requestWithJson(method,true,url,json,suc,fai);
 };
 
-
-
-function sync(method,url,suc,fai){
-	var result="";
-	$.ajax({
-        type: method,
-        url:url,
-        async:false,
-
-        success: function (res) {
-		   result =  suc(res);
-       },
-
-       failure: function (res) {
-    	   result =  fai(res);
-       }
-
-    });
-
-   return result;
-};
-
+// 同步请求，请求体参数为json格式
 function sync(method,url,json,suc,fai){
-	var result="";
+    requestWithJson(method,false,url,json,suc,fai);
+};
+
+
+// 求体参数为json格式
+function requestWithJson(method,isAsync,url,json,suc,fai){
+
+    var result="";
 	$.ajax({
         type: method,
         contentType: "application/json;charset=utf-8",
         url:url,
         data:json,
-        async:false,
+        async:isAsync,
+
+        beforeSend: function (XMLHttpRequest) {
+
+            var callBack = function(data){
+
+                 var header = new Object();
+
+                 for(var i in data){
+                    var item = data[i];
+
+                    var value = localStorage.getItem(item.key);
+                     XMLHttpRequest.setRequestHeader(item.key, value==null?"":value);
+                 }
+            };
+
+            readJsonConfig("../json/header.json",callBack);
+        },
 
         success: function (res) {
 		   result =  suc(res);
@@ -85,5 +61,44 @@ function sync(method,url,json,suc,fai){
     });
 
     return result;
+}
 
-};
+
+// 简单的请求，请求体不带参数
+function simpleRequest(method,isAsync,url,suc,fai){
+
+var result="";
+	$.ajax({
+        type: method,
+        url:url,
+        async:isAsync,
+
+        beforeSend: function (XMLHttpRequest) {
+
+                    var callBack = function(data){
+
+                         var header = new Object();
+
+                         for(var i in data){
+                            var item = data[i];
+
+                            var value = localStorage.getItem(item.key);
+                             XMLHttpRequest.setRequestHeader(item.key, value==null?"":value);
+                         }
+                    };
+
+                    readJsonConfig("../json/header.json",callBack);
+       },
+
+        success: function (res) {
+		   result =  suc(res);
+       },
+
+       failure: function (res) {
+    	   result =  fai(res);
+       }
+
+    });
+
+    return result;
+}

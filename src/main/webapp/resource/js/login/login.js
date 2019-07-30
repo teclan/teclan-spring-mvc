@@ -21,9 +21,25 @@ function login(id,password){
 
                        if(data.code==200){
 
+                       var callBack = function(configs){
+
+                            for(var i in configs){
+                               var item = configs[i];
+                               var key = item.key;
+
+                               var value = data.data[key];
+
+                               localStorage.setItem(key,value);
+
+                               console.log('缓存头请求头信息，key='+key+',value='+value);
+
+                            }
+                        }
+
+                         readJsonConfig(BASE_URL+"/resource/json/header.json",callBack);
+
                         showMessage(data.message);
 
-                        //window.open(BASE_URL+"/resource/home/home.html");
                         window.location.href=BASE_URL+"/resource/home/home.html";
 
                         }else{
@@ -43,6 +59,8 @@ function login(id,password){
 
     var json = '{"id":"'+id+'","password":"'+password+'"}';
 
- 	async('POST',BASE_URL+'/user/login.do',json,handleSuccess,handleFailure);
+     $.ajaxSettings.async = false;
+
+ 	sync('POST',BASE_URL+'/user/login.do',json,handleSuccess,handleFailure);
 
 };

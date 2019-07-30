@@ -305,21 +305,62 @@ function generateNavigationHtml(configs ){
 // 读取菜单配置文件
 function setNavigation(){
 
-    $.getJSON("../json/menu.json", function (data,status){
-        if( status=='success'){
-          var code =  generateNavigationHtml(data);
+  var callBack = function(data){
 
-            var el = document.getElementById('navigation');
-              if(el!=null){
-                el.innerHTML = code;
-              }
+       var code =  generateNavigationHtml(data);
+       var el = document.getElementById('navigation');
+       if(el!=null){
+          el.innerHTML = code;
+       }
+  };
 
-            return data;
-        }else{
-             console.log("json/menu.json文件读取失败："+status);
-             return false;
+  readJsonConfig("../json/menu.json",callBack);
+
+}
+
+// 设置自定义的请求头信息，根据配置文件中设置的字段设值
+function setCustomHeaderInfo(response){
+
+  var callBack = function(data){
+
+     for(var i in data){
+        var item = data[i];
+        var key = item.key;
+
+        for(k in response){
+
+             console.log('k='+k+',key='+key);
+
+
         }
-    });
+
+
+
+         //localStorage.setItem("TOKEN",response.data.TOKEN);
+         //localStorage.setItem("USER",response.data.USER);
+
+     }
+  };
+
+  readJsonConfig(BASE_URL+"/resource/json/header.json",callBack);
+
+}
+
+
+// 读取本地json文件
+function readJsonConfig(url,callBack){
+
+        $.getJSON(url, function (data,status){
+            if( status=='success'){
+              var code =  callBack(data);
+                return data;
+            }else{
+                 console.log(url+"文件读取失败："+status);
+                 return false;
+            }
+        });
+
+
 }
 
 // 初始化页面
