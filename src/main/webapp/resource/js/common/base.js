@@ -347,6 +347,23 @@ function setCustomHeaderInfo(response){
 }
 
 
+function clearLocalStorage(){
+
+  var callBack = function(data){
+
+     for(var i in data){
+        var item = data[i];
+        var key = item.key;
+
+        localStorage.removeItem(key);
+     }
+  };
+
+  readJsonConfig(BASE_URL+"/resource/json/header.json",callBack);
+
+}
+
+
 // 读取本地json文件
 function readJsonConfig(url,callBack){
 
