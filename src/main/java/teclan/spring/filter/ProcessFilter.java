@@ -34,9 +34,5 @@ public class ProcessFilter implements Runnable {
 		}else {
 			LOGGER.info("2 ProcessFilter 监测到 URL={},参数:{}",requestUrl,requestParams.toString());
 		}
-
-
-
-
 	}
 }

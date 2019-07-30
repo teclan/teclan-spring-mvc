@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpEntity;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.alibaba.fastjson.JSONObject;
+import teclan.spring.filter.StatusExposingServletResponse;
 
 public class HttpTool {
 	private static Logger log = Logger.getLogger(HttpTool.class);
@@ -134,5 +136,24 @@ public class HttpTool {
 			}
 		}
 		return strRes;
+	}
+
+
+	/**
+	 *
+	 * @param response
+	 * @param status
+	 * @param content
+	 * @throws IOException
+	 */
+	public static void setResponse(StatusExposingServletResponse response,int status,JSONObject content) throws IOException {
+		response.setStatus(status);
+		response.setContentType("application/json;charset=utf-8");
+		ServletOutputStream out  = response.getOutputStream();
+		out .write(content.toJSONString().getBytes());
+		out .flush();
+		out .close();
+
+
 	}
 }

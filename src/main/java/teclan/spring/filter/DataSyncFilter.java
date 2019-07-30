@@ -26,11 +26,6 @@ import teclan.spring.util.PropertyConfigUtil;
 
 public class DataSyncFilter implements Filter {
 	private final static Logger LOGGER = LoggerFactory.getLogger(DataSyncFilter.class);
-	private final static PropertyConfigUtil propertyconfigUtil;
-
-	static {
-		propertyconfigUtil = PropertyConfigUtil.getInstance("config.properties");
-	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -48,11 +43,9 @@ public class DataSyncFilter implements Filter {
 
 		filterChain.doFilter(request, response);
 
-
 		String requestURI = request.getRequestURI();
 
 		Object para = "";
-
 
 		 if ("application/json".equalsIgnoreCase(request.getContentType())){
 			 para = HttpTool.readJSONParam(request);
