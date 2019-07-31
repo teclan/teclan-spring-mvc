@@ -14,6 +14,8 @@ document.write('<script src="../lib/moment/js/moment.js" type="text/javascript" 
 
 document.write('<script src="../lib/laydate/laydate.js" type="text/javascript" charset="utf-8"></script>');
 
+document.write('<script src="../lib/bootstrap-fileinput/js/fileinput.min.js" type="text/javascript" charset="utf-8"></script>');
+
 document.write('<script src="../js/common/config.js" type="text/javascript" charset="utf-8"></script>');
 document.write('<script src="../js/common/HttpTools.js" type="text/javascript" charset="utf-8"></script>');
 document.write('<script src="../js/common/base.js"" type="text/javascript" charset="utf-8"></script>');
