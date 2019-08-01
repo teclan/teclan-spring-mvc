@@ -380,6 +380,41 @@ function readJsonConfig(url,callBack){
 
 }
 
+
+/**
+initialPreview 示例:
+                    ["https://picsum.photos/1920/1080?image=103"]
+initialPreviewConfig 示例：
+                   [{caption: "picture-3.jpg", size: 632762, width: "120px", url: '/teclan-spring-mvc/file/delete.do', key: 'keyString'}]
+                    caption: 名称
+                    url：删除的地址
+                    key：删除的参数
+
+*/
+function getFileInputSetting(uploadUrl,extensions,uploadExtraData,initialPreview,initialPreviewConfig){
+
+    var file_input = new Object();
+    file_input.theme='explorer'; // 主题
+    file_input.showUpload=false; // 是否显示“选择文件”按钮旁边的“上传”按钮
+    file_input.showRemove=false; // 是否显示“选择文件”按钮旁边的“删除”按钮
+    file_input.uploadUrl=uploadUrl; // 图片上传地址
+    file_input.allowedFileExtensions=extensions;// 允许的文件后缀
+    file_input.showCaption=true;//是否显示标题
+    file_input.showPreview=true;// 是否预展示图片
+    file_input.maxFileSize=1;//上传图片最大数量
+    file_input.maxFileSize=0; //单位为kb，如果为0表示不限制文件大小
+    file_input.enctype='multipart/form-data';// 上传图片的设置
+
+    file_input.uploadExtraData=uploadExtraData;//上传路径的参数
+    file_input.initialPreviewAsData= true;
+    file_input.initialPreview=initialPreview;
+
+    file_input.initialPreviewConfig= initialPreviewConfig;
+
+    return file_input;
+
+}
+
 // 初始化页面
 function initPage(){
 
