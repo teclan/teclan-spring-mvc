@@ -10,12 +10,38 @@
 <body>
 
 
-
 <div class="container">
         <div class='col-sm-6'>
-            <input id="file-4" type="file" class="file" data-upload-url="#">
+            <input id="input-ke-1" name="input-ke-1" type="file" multiple accept="image">
         </div>
 </div>
+
+<script>
+$("#input-ke-1").fileinput({
+    theme: "explorer",
+    showUpload: false, // 是否显示“选择文件”按钮旁边的“上传”按钮
+    showRemove: true, // 是否显示“选择文件”按钮旁边的“删除”按钮
+    uploadUrl: "/teclan-spring-mvc/file/upload.do",
+    allowedFileExtensions: ['jpg', 'png', 'gif'], // 允许的文件后缀
+    showCaption: true,//是否显示标题
+    showPreview: true,// 是否预展示图片
+    maxFileCount:1,//上传图片最大数量
+    maxFileSize: 0,           //单位为kb，如果为0表示不限制文件大小
+    enctype: 'multipart/form-data',// 上传图片的设置
+    browseClass: "btn btn-primary", //按钮样式
+    uploadExtraData:{},//上传路径的参数
+    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>", // 按钮样式
+    initialPreviewAsData: true,
+    initialPreview: [                                                                   //初始预览内容
+            "https://picsum.photos/1920/1080?image=103"
+        ],
+   initialPreviewConfig: [                                                     // 初始预览配置 caption 标题，size文件大小 ，url 删除地址，key删除时会传这个
+            {caption: "picture-3.jpg", size: 632762, width: "120px", url: '/teclan-spring-mvc/file/delete.do', key: 103}
+        ]
+
+    });
+
+</script>
 
 </body>
 </html>

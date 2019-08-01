@@ -30,7 +30,7 @@ public class ProcessFilter implements Runnable {
 	public void run() {
 
 		if(requestParams instanceof String){
-			LOGGER.info("2 ProcessFilter 监测到 URL={}?{}",requestUrl,requestParams);
+			LOGGER.info("2 ProcessFilter 监测到 URL={}{}",requestUrl,requestParams==null||"".equals(((String) requestParams).trim())?"":"?"+requestParams);
 		}else {
 			LOGGER.info("2 ProcessFilter 监测到 URL={},参数:{}",requestUrl,requestParams.toString());
 		}

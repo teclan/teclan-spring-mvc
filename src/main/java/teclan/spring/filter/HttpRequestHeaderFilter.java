@@ -48,20 +48,19 @@ public class HttpRequestHeaderFilter implements Filter {
         String url = request.getRequestURI();
 
 
-        if(whiteUrls.contains(url.replace(baseUrl,""))){
-
-            filterChain.doFilter(servletRequest, servletResponse);
-        }else {
+        if(!whiteUrls.contains(url.replace(baseUrl,""))){
 
             for(String key :headers){
                 String value = request.getHeader(key);
                 if(value==null){
-                    LOGGER.error("\n 请求头信息错误，字段 {} 值为空,url={}",key,url);
+                    LOGGER.error("\n\n 请求头信息错误，字段 {} 值为空,url={},请求被拦截!!\n\n",key,url);
                     HttpTool.setResponse(response,200,ResultUtil.get(403, "认证失败"));
                     return ;
                 }
             }
         }
+
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

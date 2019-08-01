@@ -57,12 +57,10 @@
     </filter>
     <filter-mapping>
         <filter-name>dataSyncFilter</filter-name>
-        <!-- * 代表截获所有的请求  或指定请求/test.do  /xxx.do -->
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>headerFilter</filter-name>
-        <!-- * 代表截获所有的请求  或指定请求/test.do  /xxx.do -->
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
   <servlet>
