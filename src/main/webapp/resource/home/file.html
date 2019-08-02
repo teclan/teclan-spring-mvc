@@ -12,9 +12,14 @@
 
 <div class="container">
         <div class='col-sm-6'>
-            <input id="input-ke-1" name="input-ke-1" type="file" multiple accept="image">
+            <input id="input-ke-1" name="file" type="file" multiple accept="image">
         </div>
 </div>
+
+<form id="form1" action="/teclan-spring-mvc/file/upload.do" target="frame1" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit" value="上传"  >
+</form>
 
 <script>
 

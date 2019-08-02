@@ -280,14 +280,14 @@ function generateNavigationHtml(configs ){
 
                  var id = dropdown_items[index].id; // 元素id
                  var name = dropdown_items[index].name; // 导航名称
-                 code += '                      <li><a href="'+BASE_URL+url+'" id='+id+'>'+name+'</a></li> ';
+                 code += '                      <li><a href="'+ROOT_URL+url+'" id='+id+'>'+name+'</a></li> ';
              }
 
               code += '                  </ul> ';
                code += '              </li> ';
 
         }else{
-             code += '              <li><a id="'+id+'" class="navbar-brand"  href="'+BASE_URL+url+'">'+name+'</a></li> ';
+             code += '              <li><a id="'+id+'" class="navbar-brand"  href="'+ROOT_URL+url+'">'+name+'</a></li> ';
         }
    }
 

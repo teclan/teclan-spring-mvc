@@ -36,11 +36,11 @@ function login(id,password){
                             }
                         }
 
-                         readJsonConfig(BASE_URL+"/resource/json/header.json",callBack);
+                         readJsonConfig(ROOT_URL+"/resource/json/header.json",callBack);
 
                         showMessage(data.message);
 
-                        window.location.href=BASE_URL+"/resource/home/home.html";
+                        window.location.href=ROOT_URL+"/resource/home/home.html";
 
                         }else{
                            showMessage(data.message);
