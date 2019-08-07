@@ -16,6 +16,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import teclan.spring.util.ResultUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Date;
 import java.util.Iterator;
@@ -59,19 +60,30 @@ public class FileController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject fileUpload(@RequestParam MultipartFile file) throws Exception {
-        BufferedInputStream inputStream = new BufferedInputStream(file.getInputStream());
-
-        System.out.println("文件长度: " + file.getSize());
-        System.out.println("文件类型: " + file.getContentType());
-        System.out.println("文件名称: " + file.getName());
-        System.out.println("文件原名: " + file.getOriginalFilename());
-
-        inputStreamToFile(inputStream, "E:/upload/" + file.getOriginalFilename());
-
+    public JSONObject fileUpload(HttpServletRequest request, HttpServletResponse response, @RequestParam("file") MultipartFile file) throws Exception {
+        saveFiles(file);
         return ResultUtil.get(200, "上传成功");
 
+    }
 
+
+    public static String saveFiles( MultipartFile file) {
+            // 保存文件
+            try {
+                String path = "E:/upload/" + file.getOriginalFilename();
+                File dest = new File(path);
+                if (!dest.exists()) {//不存在创建目录
+                    dest.mkdirs();
+                }
+                file.transferTo(dest);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return "";
     }
 
 

@@ -11,61 +11,79 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.ResponseWrapper;
 
-import com.google.common.base.Strings;
-import com.mysql.cj.util.StringUtils;
-import org.elasticsearch.common.util.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
 import teclan.spring.util.HttpTool;
 import teclan.spring.util.Objects;
 import teclan.spring.util.PropertyConfigUtil;
 
 public class DataSyncFilter implements Filter {
-	private final static Logger LOGGER = LoggerFactory.getLogger(DataSyncFilter.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(DataSyncFilter.class);
+    private final static PropertyConfigUtil propertyconfigUtil;
+    private static List<String> fileUploadUrls = new ArrayList<>();
+    private static String baseUrl = null;
 
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+    static {
+        propertyconfigUtil = PropertyConfigUtil.getInstance("config.properties");
+        fileUploadUrls = Arrays.asList(propertyconfigUtil.getValue("fileUploadUrls").split(","));
+        baseUrl = propertyconfigUtil.getValue("baseUrl");
+    }
 
-	}
 
-	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-			throws IOException, ServletException {
-		// 强制类型转换
-		BodyReaderHttpServletRequestWrapper request = new BodyReaderHttpServletRequestWrapper(
-				(HttpServletRequest) servletRequest);
-		StatusExposingServletResponse response = new StatusExposingServletResponse(
-				(HttpServletResponse) servletResponse);
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
 
-		filterChain.doFilter(request, response);
+    }
 
-		String requestURI = request.getRequestURI();
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
 
-		Object para = "";
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String requestURI = httpServletRequest.getRequestURI();
 
-		 if ("application/json".equalsIgnoreCase(request.getContentType())){
-			 para = HttpTool.readJSONParam(request);
-		}else {
-		 	Set<String> parameters = request.getParameterMap().keySet();
+        Object para = "";
 
-			List<String> query = new ArrayList<>();
+        HttpServletRequest request = null;
+        StatusExposingServletResponse response = new StatusExposingServletResponse(
+                (HttpServletResponse) servletResponse);
 
-			 Iterator<String> iterator =  parameters.iterator();
+        // 如果是文件上传的接口
+        if (fileUploadUrls.contains(requestURI.replace(baseUrl, ""))) {
 
-			 while (iterator.hasNext()){
-			 	String m = iterator.next();
-				 query.add(String.format("%s=%s",m,request.getParameter(m)));
-			 }
-			 para = Objects.Joiner("&",query);
-		 }
-		new Thread(new ProcessFilter(para, requestURI)).start();
-	}
+            para = "【文件】";
+            CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+            MultipartHttpServletRequest multipartRequest = commonsMultipartResolver
+                    .resolveMultipart(httpServletRequest);
+            request = multipartRequest;
+        } else {
 
-	@Override
-	public void destroy() {
-	}
+            request = new BodyReaderHttpServletRequestWrapper(
+                    (HttpServletRequest) servletRequest);
+
+            if ("application/json".equalsIgnoreCase(request.getContentType())) {
+                para = HttpTool.readJSONParam(request);
+            } else {
+                Set<String> parameters = request.getParameterMap().keySet();
+                List<String> query = new ArrayList<>();
+                Iterator<String> iterator = parameters.iterator();
+                while (iterator.hasNext()) {
+                    String m = iterator.next();
+                    query.add(String.format("%s=%s", m, request.getParameter(m)));
+                }
+                para = Objects.Joiner("&", query);
+            }
+        }
+        new Thread(new ProcessFilter(para, requestURI)).start();
+        filterChain.doFilter(request, response);
+    }
+
+    @Override
+    public void destroy() {
+    }
 }
