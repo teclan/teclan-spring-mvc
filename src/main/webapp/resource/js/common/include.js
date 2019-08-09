@@ -17,6 +17,8 @@ document.write('<script src="../lib/laydate/laydate.js" type="text/javascript" c
 document.write('<script src="../lib/bootstrap-fileinput/js/fileinput.min.js" type="text/javascript" charset="utf-8"></script>');
 document.write('<script src="../lib/bootstrap-fileinput/js/fileinput_locale_zh.js" type="text/javascript" charset="utf-8"></script>');
 
+document.write('<script src="../lib/zTree_v3/js/jquery.ztree.core.js" type="text/javascript" charset="utf-8"></script>');
+
 document.write('<script src="../js/common/config.js" type="text/javascript" charset="utf-8"></script>');
 document.write('<script src="../js/common/HttpTools.js" type="text/javascript" charset="utf-8"></script>');
 document.write('<script src="../js/common/base.js"" type="text/javascript" charset="utf-8"></script>');
