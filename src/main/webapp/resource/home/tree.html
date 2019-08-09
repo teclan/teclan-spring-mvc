@@ -30,7 +30,7 @@
 
   function initTree(){
        var setting = {
-           view: {
+            view: {
                  dblClickExpand: false,
                  showLine: true,
                  fontCss:{'color':'black','font-weight':'bold'},
@@ -38,13 +38,6 @@
                  showIcon: true,
                  showTitle: true
 
-           },
-            check:{
-                chkboxType: { "Y": "ps", "N": "ps" },
-                chkStyle: "checkbox",
-                enable: true,
-                nocheckInherit: false,
-                chkDisabledInherit: true
             },
             edit:{
                 enable: true,
@@ -65,31 +58,36 @@
                        name: "menuName"
                 }
             },
-            check:{
-                enable:true
+            check: {
+                enable: true,
+                chkStyle: "checkbox",
+                chkboxType: { "Y": "p", "N": "s" }
             },
             callback: {
                  onClick: onSelected,
-                 onAsyncSuccess: zTreeOnAsyncSuccess
+                 onCheck: onChecked
             }
        };
 
+
        function onSelected(event, treeId, treeNode) {
-         alert('点击'+treeNode.menuName);
+         //alert('点击'+treeNode.menuName);
        };
 
-       function zTreeOnAsyncSuccess(){
-                    alert('加载树成功');
-                    var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-                    treeObj.expandAll(true);
+       function onChecked(event, treeId, treeNode) {
 
+         var parentNode =  treeNode.getParentNode();
+         var parentNodeChecked = parentNode.checked;
+         var checkStatus = parentNode.getCheckStatus();
+
+         alert('当前选择节点：'+treeNode.menuName+'，父节点:（名称:'+parentNode.menuName+',选中状态:'+parentNodeChecked+',半勾选状态:'+checkStatus.half+')');
        };
 
 
        var zNodes = [
                    //注意，数据中的 menuName 必须与 settingss 中key 中定义的name一致，否则找不到
                    {id:1,parentId:0,menuName:"父节点1", open:true, children:[
-                                                            {id:11,parentId:1,menuName:"子节点11"},
+                                                            {id:11,parentId:1,menuName:"子节点11",check: true},
                                                              {id:12,parentId:1,menuName:"子节点12"}
                                                             ]
                    },
