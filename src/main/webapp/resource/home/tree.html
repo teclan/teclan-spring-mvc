@@ -28,56 +28,11 @@
 
 <script>
 
+ function onSelected(event, treeId, treeNode) {
+    alert('点击'+treeNode.name);
+ };
+
   function initTree(){
-
-var setting = {
-            view: {
-                 dblClickExpand: false,
-                 showLine: true,
-                 fontCss:{'color':'black','font-weight':'bold'},
-                 selectedMulti: true,
-                 showIcon: true,
-                 showTitle: true
-
-            },
-            edit:{
-                enable: false,
-                editNameSelectAll: false,
-                showRemoveBtn : false,
-                showRenameBtn : true,
-                removeTitle : "remove",
-                renameTitle : "rename"
-            },
-            data: {
-                simpleData: {
-                       enable: true,
-                       idKey: "id",
-                       pIdKey: "parentId",
-                       rootPId: -1
-                },
-                key: {
-                       name: "name"
-                }
-            },
-            check: {
-                enable: true,
-                chkStyle: "checkbox",
-                chkboxType: { "Y": "p", "N": "s" }
-            },
-            callback: {
-                 onClick: onSelected,
-                 onCheck: onChecked
-            }
-       };
-
-
-       function onSelected(event, treeId, treeNode) {
-         alert('点击'+treeNode.name);
-       };
-
-
-
-
        var zNodes = [
                    //注意，数据中的 name 必须与 settingss 中key 中定义的name一致，否则找不到
                    {id:1,parentId:0,name:"父节点1", open:true,
@@ -97,8 +52,7 @@ var setting = {
                    }
                    ];
 
-  zTreeObj = $.fn.zTree.init($("#regionZTree"), setting, zNodes); //初始化树
-  zTreeObj.expandAll(true);    //true 节点全部展开、false节点收缩
+        var tree = getTree("regionZTree",zNodes);
   };
 
   $(function () {
@@ -106,7 +60,6 @@ var setting = {
         $('#tree').css('font-size','25px');
         initTree();
   });
-
 
 </script>
 

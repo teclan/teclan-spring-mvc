@@ -41,7 +41,14 @@ function getDefaultZTreeSetting(){
        };
 
        return setting;
-}
+};
+
+
+function getTree(treeId,nodes){
+  zTreeObj = $.fn.zTree.init($("#"+treeId), getDefaultZTreeSetting(), nodes); //初始化树
+  zTreeObj.expandAll(true);    //true 节点全部展开、false节点收缩
+  return zTreeObj;
+};
 
 
 // zTree 的 callback.onCheck 回调的共用方法
