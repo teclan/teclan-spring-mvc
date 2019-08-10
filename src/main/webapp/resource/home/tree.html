@@ -40,9 +40,9 @@
 
             },
             edit:{
-                enable: true,
-                editNameSelectAll: true,
-                showRemoveBtn : true,
+                enable: false,
+                editNameSelectAll: false,
+                showRemoveBtn : false,
                 showRenameBtn : true,
                 removeTitle : "remove",
                 renameTitle : "rename"
@@ -55,7 +55,7 @@
                        rootPId: -1
                 },
                 key: {
-                       name: "menuName"
+                       name: "name"
                 }
             },
             check: {
@@ -71,29 +71,152 @@
 
 
        function onSelected(event, treeId, treeNode) {
-         //alert('点击'+treeNode.menuName);
+         alert('点击'+treeNode.name);
        };
 
        function onChecked(event, treeId, treeNode) {
 
-         var parentNode =  treeNode.getParentNode();
-         var parentNodeChecked = parentNode.checked;
-         var checkStatus = parentNode.getCheckStatus();
+         var tree = $.fn.zTree.getZTreeObj(treeId);
 
-         alert('当前选择节点：'+treeNode.menuName+'，父节点:（名称:'+parentNode.menuName+',选中状态:'+parentNodeChecked+',半勾选状态:'+checkStatus.half+')');
+         // 更新子节点的选中状态
+         updateChildrenCheckStatus(tree,treeNode);
+         // 更新父节点的选中状态
+         updateParentCheckStatus(tree,treeNode);
+
+         // 选中的节点，但不包括半勾选节点
+         var selectedNodes = tree.getSelectedNodes();
+
+         // 半选节点
+         var halfSelectNodes = new Set();
+
+         // 要获取半勾选的节点，必须遍历选中的节点的所有父节点，
+         // 因为半选的节点只会在这些被选中的节点的父节点中出现
+
+         var nodes = tree.transformToArray(selectedNodes);
+
+         for(i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            setHalfSelectNodes(node,halfSelectNodes);
+         }
+
+         var selected = '';
+         var halfSelected='';
+         for(i = 0; i < nodes.length; i++) {
+             var node = nodes[i];
+             selected +='节点:'+ node.name+'   ';
+         }
+
+
+         for (var node of halfSelectNodes.keys()){
+             halfSelected +='节点:'+ node.name+'   ';
+          }
        };
 
 
+       // 更新父节点的选中状态,当节点被取消选中状态时，
+       // 需要对父节点的选中状态做更新，如果某个节点下
+       // 已经没有任何节点被选中,应该对该的半勾选状态取消
+
+       // tree: 树对象
+       // treeNode : 被选中/取消选中的节点
+
+  function updateParentCheckStatus(tree,treeNode){
+
+        // 当前节点的选中状态
+        var checkStatus = treeNode.checked;
+        // 获取当前节点的父节点
+        var parent = treeNode.getParentNode();
+
+        if(parent==undefined){
+            return;
+         }
+
+        // 当前节点的选中状态
+        var pCheckStatus = parent.getCheckStatus();
+
+        //--------------------------------------------
+        // 当前节点被取消选中时，需要检查父节点的勾选状态
+        // 如果父节点是处于半勾选状态，需要检查父节点的子节点是否有选中，如果子节点都没有选中，那么取消该节点的半勾选状态
+
+        var hasChildrenChecked = false;
+
+
+           var children = parent.children;
+
+           if(children!=undefined){
+               for(var node of children) {
+                      var chkStu = node.getCheckStatus();
+                      // 如果发现被选字节点有选中（含半勾选），则该节点的父节点半勾选状态保留
+                      if(chkStu.checked==true){
+                        hasChildrenChecked=true;
+                        break;
+                      }
+                }
+           }
+
+        if(!hasChildrenChecked){
+              parent.checked=false;
+              parent.half=false;
+              tree.updateNode(parent,false);
+        }
+
+        updateParentCheckStatus(tree,parent);
+  };
+
+
+       // 更新子节点的选中状态
+       // tree: 树对象
+       // treeNode : 被选中/取消选中的节点
+
+       function updateChildrenCheckStatus(tree,treeNode){
+
+        // 当前节点的选中状态
+        var checkStatus = treeNode.checked;
+        // 获取当前节点的子节点
+         var children = treeNode.children;
+
+         if(children==undefined){
+            return;
+         }
+         for(var node of children) {
+            node.checked=checkStatus;
+            tree.updateNode(node,false);
+            updateChildrenCheckStatus(tree,node);
+         }
+       };
+
+
+       // 设置半选节点
+       function setHalfSelectNodes(treeNode,set){
+
+             var temp = treeNode;
+
+             while(temp!=null){
+
+                var checkStatus = temp.getCheckStatus();
+
+                if(checkStatus.half==true){
+                    set.add(temp);
+                }
+                temp = treeNode;
+             }
+       };
+
        var zNodes = [
-                   //注意，数据中的 menuName 必须与 settingss 中key 中定义的name一致，否则找不到
-                   {id:1,parentId:0,menuName:"父节点1", open:true, children:[
-                                                            {id:11,parentId:1,menuName:"子节点11",check: true},
-                                                             {id:12,parentId:1,menuName:"子节点12"}
+                   //注意，数据中的 name 必须与 settingss 中key 中定义的name一致，否则找不到
+                   {id:1,parentId:0,name:"父节点1", open:true,
+                                                            children:[
+                                                                        {id:11,parentId:1,name:"子节点11"},
+                                                                        {id:12,parentId:1,name:"子节点12",
+                                                                                        children:[
+                                                                                                    {id:121,parentId:1,name:"子节点121"},
+                                                                                                    {id:122,parentId:1,name:"子节点122"}
+                                                                                        ]}
                                                             ]
                    },
-                   {id:2,parentId:0,menuName:"父节点2", open:true, children:[
-                                                            {id:21,parentId:2,menuName:"子节点21"},
-                                                            {id:22,parentId:2,menuName:"子节点22"}
+                   {id:2,parentId:0,name:"父节点2", open:true, children:[
+                                                            {id:21,parentId:2,name:"子节点21"},
+                                                            {id:22,parentId:2,name:"子节点22"}
                                                             ]
                    }
                    ];
