@@ -1,5 +1,5 @@
 
-function getDefaultZTreeSetting(rootPId,url){
+function getDefaultZTreeSetting(rootPId,childreUrl,renameUrl,removeUrl){
     var setting = {
             view: {
                  dblClickExpand: false,
@@ -7,16 +7,18 @@ function getDefaultZTreeSetting(rootPId,url){
                  fontCss:{'color':'black','font-weight':'bold'},
                  selectedMulti: true,
                  showIcon: true,
-                 showTitle: true
+                 showTitle: true,
+                 addHoverDom: addHoverDom,
+                 removeHoverDom: removeHoverDom
 
             },
             edit:{
                 enable: true,
                 editNameSelectAll: false,
-                showRemoveBtn : false,
-                showRenameBtn : false,
-                removeTitle : "remove",
-                renameTitle : "rename"
+                showRemoveBtn : true,
+                showRenameBtn : true,
+                removeTitle : "删除",
+                renameTitle : "重命名"
             },
             data: {
                 simpleData: {
@@ -37,15 +39,17 @@ function getDefaultZTreeSetting(rootPId,url){
             callback: {
                  onClick: onSelected,
                  onCheck: onChecked,
-                 onExpand: onExpanded
+                 onExpand: onExpanded,
+                 onRename: onRenamed,
+                 onRemove: onRemoved
             }
     };
 
-    if(url!=null){
-        var async = new Object();
-        async.url=url;
-        setting.async=async;
-    }
+    var url = new Object();
+    url.childreUrl=childreUrl;
+    url.renameUrl=renameUrl;
+    url.removeUrl=removeUrl;
+    setting.url=url;
 
     return setting;
 };
@@ -55,9 +59,14 @@ function getDefaultZTreeSetting(rootPId,url){
 // treeId: 存放树结构的容器(必填)
 // nodes: 节点数据(非必填)
 // rootPId: 根节点父id,默认-1(非必填)
-// url: 节点展开时默认请求的加载子节点的url，(非必填)
+// childrenUrl: 节点展开时默认请求的加载子节点的url，(非必填)
 //       post请求，json格式送参，参数格式{"id": ${对应节点的id}}
-function ZTreeInit(treeId,nodes,rootPId,url){
+// renameUrl: 节点重命名时url，(非必填)
+//       post请求，json格式送参，参数格式{"id": ${对应节点的id},"name":${节点名称}}
+// removeUrl: 节点删除时的url，(非必填)
+//       post请求，json格式送参，参数格式{"id": ${对应节点的id}}
+
+function ZTreeInit(treeId,nodes,rootPId,childrenUrl,renameUrl,removeUrl){
 
    if(rootPId==null){
      rootPId=-1;
@@ -67,10 +76,27 @@ function ZTreeInit(treeId,nodes,rootPId,url){
      nodes=[];
    }
 
-  zTreeObj = $.fn.zTree.init($("#"+treeId), getDefaultZTreeSetting(rootPId,url), nodes); //初始化树
+  zTreeObj = $.fn.zTree.init($("#"+treeId), getDefaultZTreeSetting(rootPId,childrenUrl,renameUrl,removeUrl), nodes); //初始化树
   zTreeObj.expandAll(false);    //true 节点全部展开、false节点收缩
   return zTreeObj;
 };
+
+
+function addHoverDom(treeId,treeNode){
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+            + "' title='添加子节点' onfocus='this.blur();'></span>";
+        sObj.after(addStr);
+        var btn = $("#addBtn_"+treeNode.tId);
+        if (btn) btn.bind("click", function(){
+            alert("开始添加节点")
+            return false;
+        });
+    }
+function removeHoverDom(treeId,treeNode){
+    $("#addBtn_"+treeNode.tId).unbind().remove();
+}
 
 
 // zTree 的 callback.onCheck 回调的共用方法
@@ -89,7 +115,7 @@ function onChecked(event, treeId, treeNode) {
 // zTree 的 callback.onExpand 回调的共用方法
 function onExpanded(event, treeId, treeNode) {
    var tree = $.fn.zTree.getZTreeObj(treeId);
-   var url = tree.setting.async.url;
+   var url = tree.setting.url.childreUrl;
 
    var handleSuccess = function(response){
             if(response !== undefined) {
@@ -136,6 +162,89 @@ function onExpanded(event, treeId, treeNode) {
    var json = '{"id":'+treeNode.id+'}';
    sync('POST',BASE_URL+url,json,handleSuccess,handleFailure);
 };
+
+// 重命名
+function onRenamed(event, treeId, treeNode) {
+   var tree = $.fn.zTree.getZTreeObj(treeId);
+   var url = tree.setting.url.renameUrl;
+
+   var handleSuccess = function(response){
+            if(response !== undefined) {
+                    try {
+                       if(response.code==200){
+                            tree.removeNode(treeNode,false);
+                            //tree.updateNode(treeNode,false);
+                            tree.refresh();
+                       }else{
+                            showMessage(response.message);
+                       }
+
+                    } catch(e) {
+                        alert("error!"+e);
+                        return false;
+                    }
+           }
+   };
+
+   var handleFailure = function(o){
+   };
+
+   var isAjaxing = treeNode.isAjaxing;
+ 	 if(isAjaxing){
+ 	   showMessage('正在处理，请稍候重试...');
+ 	   return;
+   }
+
+   if(url==null||""==url){
+ 	  // do nothing
+ 	   return;
+   }
+   var json = '{"id":'+treeNode.id+',"name:":"'+treeNode.name+'"}';
+   sync('POST',BASE_URL+url,json,handleSuccess,handleFailure);
+};
+
+
+// 删除
+function onRemoved(event, treeId, treeNode) {
+   var tree = $.fn.zTree.getZTreeObj(treeId);
+   var url = tree.setting.url.removeUrl;
+
+   var handleSuccess = function(response){
+            if(response !== undefined) {
+                    try {
+                       if(response.code==200){
+                            tree.removeNode(treeNode,false);
+                            //tree.updateNode(treeNode,false);
+                            tree.refresh();
+                       }else{
+                            showMessage(response.message);
+                       }
+
+                    } catch(e) {
+                        alert("error!"+e);
+                        return false;
+                    }
+           }
+   };
+
+   var handleFailure = function(o){
+   };
+
+   var isAjaxing = treeNode.isAjaxing;
+ 	 if(isAjaxing){
+ 	   showMessage('正在处理，请稍候重试...');
+ 	   return;
+   }
+
+   if(url==null||""==url){
+ 	  // do nothing
+ 	   return;
+   }
+   var json = '{"id":'+treeNode.id+',"name:"'+treeNode.name+'"}';
+   sync('POST',BASE_URL+url,json,handleSuccess,handleFailure);
+};
+
+
 
 // 获取勾选节点的信息
 function getCheckNodes(tree){
