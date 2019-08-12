@@ -427,3 +427,12 @@ function initPage(){
   setDefaultPagination();
 
 }
+
+
+function openWindow(url,w,h)
+{
+    var left=(window.screen.width-w)/2;
+    var top=(window.screen.height-h)/2;
+    window.open(url, "", 'height='+h+', width='+w+',top='+top+',left='+left+',toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+
+}

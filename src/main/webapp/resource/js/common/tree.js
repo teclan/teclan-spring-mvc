@@ -1,5 +1,5 @@
 
-function getDefaultZTreeSetting(rootPId,childreUrl,renameUrl,removeUrl){
+function getDefaultZTreeSetting(rootPId,childreUrl,renameUrl,removeUrl,addUrl){
     var setting = {
             view: {
                  dblClickExpand: false,
@@ -49,6 +49,7 @@ function getDefaultZTreeSetting(rootPId,childreUrl,renameUrl,removeUrl){
     url.childreUrl=childreUrl;
     url.renameUrl=renameUrl;
     url.removeUrl=removeUrl;
+    url.addUrl=addUrl;
     setting.url=url;
 
     return setting;
@@ -65,8 +66,10 @@ function getDefaultZTreeSetting(rootPId,childreUrl,renameUrl,removeUrl){
 //       post请求，json格式送参，参数格式{"id": ${对应节点的id},"name":${节点名称}}
 // removeUrl: 节点删除时的url，(非必填)
 //       post请求，json格式送参，参数格式{"id": ${对应节点的id}}
+// addUrl: 添加节点的url，(非必填)
+//       post请求，json格式送参，参数格式{"id": ${对应节点的id},"name":${节点名称},"parentId":${父节点Id}}
 
-function ZTreeInit(treeId,nodes,rootPId,childrenUrl,renameUrl,removeUrl){
+function ZTreeInit(treeId,nodes,rootPId,childrenUrl,renameUrl,removeUrl,addUrl){
 
    if(rootPId==null){
      rootPId=-1;
@@ -76,13 +79,19 @@ function ZTreeInit(treeId,nodes,rootPId,childrenUrl,renameUrl,removeUrl){
      nodes=[];
    }
 
-  zTreeObj = $.fn.zTree.init($("#"+treeId), getDefaultZTreeSetting(rootPId,childrenUrl,renameUrl,removeUrl), nodes); //初始化树
+  zTreeObj = $.fn.zTree.init($("#"+treeId), getDefaultZTreeSetting(rootPId,childrenUrl,renameUrl,removeUrl,addUrl), nodes); //初始化树
   zTreeObj.expandAll(false);    //true 节点全部展开、false节点收缩
   return zTreeObj;
 };
 
 
 function addHoverDom(treeId,treeNode){
+
+        var tree = $.fn.zTree.getZTreeObj(treeId);
+        var addUrl = tree.setting.url.addUrl;
+
+        localStorage.setItem("TREE.ADDURL",addUrl);
+
         var sObj = $("#" + treeNode.tId + "_span");
         if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
         var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
@@ -90,10 +99,17 @@ function addHoverDom(treeId,treeNode){
         sObj.after(addStr);
         var btn = $("#addBtn_"+treeNode.tId);
         if (btn) btn.bind("click", function(){
-            alert("开始添加节点")
+           // openWindow(BASE_URL+'/resource/tree/add.html',"400","300");
+            _openPopups($('body'),BASE_URL+'/resource/tree/add.html',{width:400,height:300});
             return false;
         });
     }
+
+function back(){
+     _closePopus();
+};
+
+
 function removeHoverDom(treeId,treeNode){
     $("#addBtn_"+treeNode.tId).unbind().remove();
 }
@@ -159,7 +175,7 @@ function onExpanded(event, treeId, treeNode) {
  	  // do nothing
  	   return;
    }
-   var json = '{"id":'+treeNode.id+'}';
+   var json = '{"id":"'+treeNode.id+'","name":"'+treeNode.name+'","parentId":"'+treeNode.parentId+'"}';
    sync('POST',BASE_URL+url,json,handleSuccess,handleFailure);
 };
 
@@ -199,7 +215,7 @@ function onRenamed(event, treeId, treeNode) {
  	  // do nothing
  	   return;
    }
-   var json = '{"id":'+treeNode.id+',"name:":"'+treeNode.name+'"}';
+   var json = '{"id":"'+treeNode.id+'","name":"'+treeNode.name+'","parentId":"'+treeNode.parentId+'"}';
    sync('POST',BASE_URL+url,json,handleSuccess,handleFailure);
 };
 
@@ -240,7 +256,7 @@ function onRemoved(event, treeId, treeNode) {
  	  // do nothing
  	   return;
    }
-   var json = '{"id":'+treeNode.id+',"name:"'+treeNode.name+'"}';
+   var json = '{"id":"'+treeNode.id+'","name":"'+treeNode.name+'","parentId":"'+treeNode.parentId+'"}';
    sync('POST',BASE_URL+url,json,handleSuccess,handleFailure);
 };
 
@@ -372,4 +388,9 @@ function collectNodesInfo(treeNode,selectedNodeSet,halfSelectedNodeSet){
         }
         parent = parent.getParentNode();
     }
+};
+
+function doAdd(json){
+     var addUrl = localStorage.getItem("TREE.ADDURL");
+     commonAdd(addUrl,json);
 };
