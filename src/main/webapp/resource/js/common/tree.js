@@ -97,6 +97,16 @@ function onExpanded(event, treeId, treeNode) {
                        if(response.code==200){
                             var data=eval(response.data);
                             treeNode.children = data;
+
+                            for(var node of data){
+
+                               if(node.children=='undefined' || node.children==null){
+                                 node.children=[];
+                                 node.open = false;
+                               }
+
+                            }
+
                             //tree.updateNode(treeNode,false);
                             tree.refresh();
                        }else{
@@ -119,12 +129,10 @@ function onExpanded(event, treeId, treeNode) {
  	   return;
    }
 
-   if(url==null){
+   if(url==null||""==url){
  	  // do nothing
  	   return;
    }
-
-
    var json = '{"id":'+treeNode.id+'}';
    sync('POST',BASE_URL+url,json,handleSuccess,handleFailure);
 };
