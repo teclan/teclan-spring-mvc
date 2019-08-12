@@ -1,5 +1,5 @@
 
-function getDefaultZTreeSetting(){
+function getDefaultZTreeSetting(rootPId,url){
     var setting = {
             view: {
                  dblClickExpand: false,
@@ -11,10 +11,10 @@ function getDefaultZTreeSetting(){
 
             },
             edit:{
-                enable: false,
+                enable: true,
                 editNameSelectAll: false,
                 showRemoveBtn : false,
-                showRenameBtn : true,
+                showRenameBtn : false,
                 removeTitle : "remove",
                 renameTitle : "rename"
             },
@@ -23,7 +23,7 @@ function getDefaultZTreeSetting(){
                        enable: true,
                        idKey: "id",
                        pIdKey: "parentId",
-                       rootPId: -1
+                       rootPId: rootPId
                 },
                 key: {
                        name: "name"
@@ -36,17 +36,39 @@ function getDefaultZTreeSetting(){
             },
             callback: {
                  onClick: onSelected,
-                 onCheck: onChecked
+                 onCheck: onChecked,
+                 onExpand: onExpanded
             }
-       };
+    };
 
-       return setting;
+    if(url!=null){
+        var async = new Object();
+        async.url=url;
+        setting.async=async;
+    }
+
+    return setting;
 };
 
 
-function getTree(treeId,nodes){
-  zTreeObj = $.fn.zTree.init($("#"+treeId), getDefaultZTreeSetting(), nodes); //初始化树
-  zTreeObj.expandAll(true);    //true 节点全部展开、false节点收缩
+// 初始化树结构,全量加载树结构数据
+// treeId: 存放树结构的容器(必填)
+// nodes: 节点数据(非必填)
+// rootPId: 根节点父id,默认-1(非必填)
+// url: 节点展开时默认请求的加载子节点的url，(非必填)
+//       post请求，json格式送参，参数格式{"id": ${对应节点的id}}
+function ZTreeInit(treeId,nodes,rootPId,url){
+
+   if(rootPId==null){
+     rootPId=-1;
+   }
+
+   if(nodes==null){
+     nodes=[];
+   }
+
+  zTreeObj = $.fn.zTree.init($("#"+treeId), getDefaultZTreeSetting(rootPId,url), nodes); //初始化树
+  zTreeObj.expandAll(false);    //true 节点全部展开、false节点收缩
   return zTreeObj;
 };
 
@@ -62,6 +84,49 @@ function onChecked(event, treeId, treeNode) {
          updateParentCheckStatus(tree,treeNode);
 
         getCheckNodes(tree);
+};
+
+// zTree 的 callback.onExpand 回调的共用方法
+function onExpanded(event, treeId, treeNode) {
+   var tree = $.fn.zTree.getZTreeObj(treeId);
+   var url = tree.setting.async.url;
+
+   var handleSuccess = function(response){
+            if(response !== undefined) {
+                    try {
+                       if(response.code==200){
+                            var data=eval(response.data);
+                            treeNode.children = data;
+                            //tree.updateNode(treeNode,false);
+                            tree.refresh();
+                       }else{
+                            showMessage(response.message);
+                       }
+
+                    } catch(e) {
+                        alert("error!"+e);
+                        return false;
+                    }
+           }
+   };
+
+   var handleFailure = function(o){
+   };
+
+   var isAjaxing = treeNode.isAjaxing;
+ 	 if(isAjaxing){
+ 	   showMessage('该节点正在加载，请稍候重试...');
+ 	   return;
+   }
+
+   if(url==null){
+ 	  // do nothing
+ 	   return;
+   }
+
+
+   var json = '{"id":'+treeNode.id+'}';
+   sync('POST',BASE_URL+url,json,handleSuccess,handleFailure);
 };
 
 // 获取勾选节点的信息
