@@ -280,6 +280,8 @@ function generateNavigationHtml(configs ){
 
                  var id = dropdown_items[index].id; // 元素id
                  var name = dropdown_items[index].name; // 导航名称
+                 var url = dropdown_items[index].url; // url
+
                  code += '                      <li><a href="'+ROOT_URL+url+'" id='+id+'>'+name+'</a></li> ';
              }
 
@@ -436,3 +438,14 @@ function openWindow(url,w,h)
     window.open(url, "", 'height='+h+', width='+w+',top='+top+',left='+left+',toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
 
 }
+
+
+function getUrlParameter(name){
+   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+   var r = window.location.search.substr(1).match(reg);
+
+   if (r != null) {
+     return unescape(r[2]);
+   }
+   return null;
+  }

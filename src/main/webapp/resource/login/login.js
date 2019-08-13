@@ -57,10 +57,24 @@ function login(id,password){
  	 var handleFailure = function(o){
  	 };
 
-    var json = '{"id":"'+id+'","password":"'+password+'"}';
+    var json = '{"account":"'+id+'","password":"'+password+'"}';
 
      $.ajaxSettings.async = false;
 
- 	sync('POST',BASE_URL+'/user/login.do',json,handleSuccess,handleFailure);
+ 	sync('POST',BASE_URL+'/login.do',json,handleSuccess,handleFailure);
+
+};
+
+
+function logout(){
+
+     var handleSuccess = function(data){
+     };
+
+ 	 var handleFailure = function(o){
+ 	 };
+
+    var json = '{"account":"'+localStorage.getItem("USER")+'"}';
+ 	sync('POST',BASE_URL+'/logout.do',json,handleSuccess,handleFailure);
 
 };

@@ -2,13 +2,11 @@ package teclan.spring.ctrl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sdicons.json.validator.impl.predicates.Str;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import teclan.spring.util.HttpTool;
 import teclan.spring.util.PagesUtils;
@@ -26,28 +24,6 @@ public class UserController {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
-
-
-    @RequestMapping(value = "/login")
-    @ResponseBody
-    public JSONObject login(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            String json = HttpTool.readJSONString(request);
-            JSONObject parameter = JSON.parseObject(json);
-
-            Map<String,Object> map = jdbcTemplate.queryForMap("select * from user_info where id=?",10);
-            map.put("USER",map.get("code"));
-            map.put("TOKEN",new Date().getTime());
-
-            return ResultUtil.get(200, "成功",map);
-
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            return ResultUtil.get(500, e.getMessage());
-        }
-
-    }
-
 
     @RequestMapping(value = "/page")
     @ResponseBody

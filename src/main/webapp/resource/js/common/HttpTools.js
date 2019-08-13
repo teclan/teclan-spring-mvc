@@ -1,16 +1,3 @@
-
-// 异步请求，参数都在url中，请求体不带参数
-function async(method,url,suc,fai){
-    return  simpleRequest(method,true,url,suc,fai);;
-
-};
-
-// 同步请求，参数都在url中，请求体不带参数
-function sync1(method,url,suc,fai){
-   return simpleRequest(method,false,url,suc,fai);
-};
-
-
 // 异步请求，请求体参数为json格式
 function async(method,url,json,suc,fai){
      return requestWithJson(method,true,url,json,suc,fai);

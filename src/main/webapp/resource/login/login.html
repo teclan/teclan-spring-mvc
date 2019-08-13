@@ -6,22 +6,10 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 
+    <link rel="stylesheet" href="../css/common/include.css">
 
-    <link rel="stylesheet" href="resource/lib/bootstrap-3.3.7/css/bootstrap.css">
-    <link rel="stylesheet" href="resource/lib/messenger/css/messenger.css">
-
-    <script  language="javascript" type="text/javascript"  src="resource/lib/js/jquery-3.4.1.min.js"></script>
-    <script  language="javascript" type="text/javascript"  src="resource/lib/js/jquery-ajax-expand.js"></script>
-
-    <script  language="javascript" type="text/javascript"  src="resource/lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-
-    <script  language="javascript" type="text/javascript"  src="resource/lib/messenger/js/messenger.min.js"></script>
-    <script  language="javascript" type="text/javascript"  src="resource/lib/messenger/js/messenger-theme-future.js"></script>
-
-    <script  language="javascript" type="text/javascript"  src="resource/js/login/login.js"></script>
-    <script  language="javascript" type="text/javascript"  src="resource/js/common/HttpTools.js"></script>
-    <script  language="javascript" type="text/javascript"  src="resource/js/common/config.js"></script>
-    <script  language="javascript" type="text/javascript"  src="resource/js/common/base.js"></script>
+    <script  language="javascript" type="text/javascript"  src="../js/common/include.js"></script>
+    <script  language="javascript" type="text/javascript"  src="../login/login.js"></script>
 
     <style type="text/css">
 
@@ -49,14 +37,34 @@
 <script type="text/javascript">
 
     $(function () {
-       clearLocalStorage();
+       doLogout();
+      // clearLocalStorage();
        setDefaultFooter('footer');
     });
+
+    function doLogout(){
+      // 如果是来自登出，则需要发起登出操作
+      var from_logout = getUrlParameter('from-logout');
+      if(from_logout==1){
+        logout();
+      }
+    };
 
 
     function doLogin(){
       var id = $('#id').val();
       var password = $('#password').val();
+
+      if(id==null||id=='undefined'||id==''){
+        showMessage('请输入账号');
+        return;
+      }
+
+      if(password==null||password=='undefined'||password==''){
+        showMessage('请输入密码');
+        return;
+      }
+
       login(id,password);
     };
 </script>

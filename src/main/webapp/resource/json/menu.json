@@ -11,9 +11,9 @@
                     {"id": "first","name": "firstName","dropdown": false,"url":""},
                     {"id": "second","name": "secondName","dropdown": false,"url":""}]
   },
-  {"id": "avatar","name": "个人中心","dropdown": true,"url": "",
+  {"id": "avatar","name": "个人中心","dropdown": true,"url": "#",
                   "dropdown_items":[
                     {"id": "profile","name": "个人资料","dropdown": false,"url":""},
-                    {"id": "logout","name": "登   出","dropdown": false,"url":"/"}]
+                    {"id": "logout","name": "登   出","dropdown": false,"url":"/resource/login/login.html?from-logout=1"}]
   }
 ]
