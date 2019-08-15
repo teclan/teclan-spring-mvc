@@ -20,4 +20,36 @@
             #{item}
         </foreach>
     </delete>
+
+    <insert id="create" parameterType="teclan.spring.model.Log">
+        insert into log (`id`,`session_id`,`url`,`parameter`,`status`,`result`,`created_at`)
+        values (#{id},#{sessionId},#{url},#{parameter},#{status},#{result},#{createdAt});
+    </insert>
+
+    <insert id="update" parameterType="teclan.spring.model.Log">
+        update log set
+
+        <if test="sessionId!=null">
+           `session_id`=#{sessionId},
+        </if>
+
+        <if test="url!=null">
+            `url`=#{url},
+        </if>
+        <if test="parameter!=null">
+            `parameter`=#{parameter},
+        </if>
+        <if test="status!=null">
+            `status`=#{status},
+        </if>
+        <if test="result!=null">
+            `result`=#{result},
+        </if>
+        <if test="createdAt!=null">
+            `created_at`=#{createdAt},
+        </if>
+        `id`=#{id}
+        where
+            `id`=#{id}
+    </insert>
 </mapper>

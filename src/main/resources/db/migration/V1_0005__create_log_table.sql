@@ -4,7 +4,8 @@ CREATE TABLE `log` (
   `url` varchar(2000) DEFAULT NULL comment 'url',
   `parameter` varchar(2000) comment '参数',
   `status` varchar(32) comment '状态',
-  `create_at` datetime comment '创建时间'
+  `result` varchar(2000) comment '结果',
+  `created_at` datetime comment '创建时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

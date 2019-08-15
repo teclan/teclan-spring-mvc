@@ -7,18 +7,27 @@ public class Log extends Model {
     private String id;
     private String sessionId;
     private String url;
-    private Object paramater;
+    private Object parameter;
     private String result;
     private String status;
     private String createdAt;
 
-    public Log(String sessionId, String url, Object paramater) {
-        this.id = IdUtils.get();
+
+    public Log(String id,String sessionId, String url, Object parameter, String result, String status, String createdAt) {
+        this.id = id;
         this.sessionId = sessionId;
         this.url = url;
-        this.paramater = paramater;
+        this.parameter = parameter;
+        this.result = result;
+        this.status = status;
+        this.createdAt = createdAt;
     }
 
+    public Log(String sessionId, String url, Object parameter) {
+        this.sessionId = sessionId;
+        this.url = url;
+        this.parameter = parameter;
+    }
 
     public String getId() {
         return id;
@@ -44,12 +53,12 @@ public class Log extends Model {
         this.url = url;
     }
 
-    public Object getParamater() {
-        return paramater;
+    public Object getParameter() {
+        return parameter;
     }
 
-    public void setParamater(Object paramater) {
-        this.paramater = paramater;
+    public void setParameter(Object parameter) {
+        this.parameter = parameter;
     }
 
     public String getResult() {

@@ -48,6 +48,7 @@
         <filter-name>dataSyncFilter</filter-name>
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
+    <!--
      <filter>
            <filter-name>headerFilter</filter-name>
            <filter-class>teclan.spring.filter.HttpRequestHeaderFilter</filter-class>
@@ -64,6 +65,7 @@
           <filter-name>headerFilter</filter-name>
           <url-pattern>*.do</url-pattern>
       </filter-mapping>
+      -->
   <servlet>
     <servlet-name>dispatcher</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

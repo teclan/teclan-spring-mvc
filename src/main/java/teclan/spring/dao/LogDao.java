@@ -9,10 +9,13 @@ import teclan.spring.model.Log;
 @Mapper
 public interface LogDao {
 
-    public Log findOne(@Param("id")Integer  id);
+    public Log findOne(@Param("id")String  id);
 
-    public Integer delete(@Param("id")Integer  id);
+    public Integer delete(@Param("id")String  id);
 
     public Integer deleteBatch(@Param("ids")String[]  ids);
 
+    public Integer create(Log log);
+
+    public Integer update(Log log);
 }

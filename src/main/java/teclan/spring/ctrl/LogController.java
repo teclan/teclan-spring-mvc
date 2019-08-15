@@ -29,7 +29,7 @@ public class LogController {
 
     @RequestMapping(value = "/get",method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject get(HttpServletRequest request, HttpServletResponse response,Integer id) {
+    public JSONObject get(HttpServletRequest request, HttpServletResponse response,String id) {
         try {
             Log log = logDao.findOne(id);
 
@@ -43,7 +43,7 @@ public class LogController {
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject delete(HttpServletRequest request, HttpServletResponse response,Integer id) {
+    public JSONObject delete(HttpServletRequest request, HttpServletResponse response,String id) {
         try {
             int row = logDao.delete(id);
             return ResultUtil.get(200, row>0?"删除成功":"删除失败","受影响行数:"+row);
@@ -55,13 +55,42 @@ public class LogController {
 
     @RequestMapping(value = "/deleteBatch",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject delete(HttpServletRequest request, HttpServletResponse response,String ids) {
+    public JSONObject deleteBatch(HttpServletRequest request, HttpServletResponse response,String ids) {
         try {
             int row = logDao.deleteBatch(ids.split(","));
             return ResultUtil.get(200, row>0?"删除成功":"删除失败","受影响行数:"+row);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return ResultUtil.get(500, "删除失败",e.getMessage());
+        }
+    }
+
+
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject create(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String json = HttpTool.readJSONString(request);
+            Log log = JSON.parseObject(json,Log.class);
+            int row =logDao.create(log);
+            return ResultUtil.get(200, row>0?"创建成功":"创建失败","受影响行数:"+row);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(500, "创建失败",e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject update(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String json = HttpTool.readJSONString(request);
+            Log log = JSON.parseObject(json,Log.class);
+            int row =logDao.update(log);
+            return ResultUtil.get(200, row>0?"更新成功":"更新失败","受影响行数:"+row);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(500, "更新失败",e.getMessage());
         }
     }
 }
