@@ -5,6 +5,10 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import teclan.spring.model.Log;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Repository
 @Mapper
 public interface LogDao {
@@ -18,4 +22,8 @@ public interface LogDao {
     public Integer create(Log log);
 
     public Integer update(Log log);
+
+    public List<Log> query(Map<String,Object> parameter);
+
+    public Integer countQuery(Map<String,Object> parameter);
 }

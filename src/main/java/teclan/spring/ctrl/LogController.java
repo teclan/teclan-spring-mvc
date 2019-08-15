@@ -93,4 +93,21 @@ public class LogController {
             return ResultUtil.get(500, "更新失败",e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/query",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject query(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            JSONObject jsonObject = HttpTool.readJSONParam(request);
+             List<Log> logs =logDao.query(jsonObject);
+            logDao.countQuery(jsonObject);
+            return ResultUtil.get(200, "查询成功",logs);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(500, "查询失败",e.getMessage());
+        }
+    }
+
+
+
 }
