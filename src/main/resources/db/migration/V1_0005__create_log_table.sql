@@ -1,0 +1,12 @@
+CREATE TABLE `log` (
+  `id` varchar(32) NOT NULL primary key comment 'ID',
+  `session_id` varchar(32) not null comment '会话ID',
+  `url` varchar(2000) DEFAULT NULL comment 'url',
+  `parameter` varchar(2000) comment '参数',
+  `status` varchar(32) comment '状态',
+  `create_at` datetime comment '创建时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+

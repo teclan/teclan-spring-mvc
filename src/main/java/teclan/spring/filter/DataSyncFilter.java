@@ -79,7 +79,7 @@ public class DataSyncFilter implements Filter {
                 para = Objects.Joiner("&", query);
             }
         }
-        new Thread(new ProcessFilter(para, requestURI)).start();
+        new Thread(new ProcessFilter(request.getSession().getId(),requestURI,para)).start();
         filterChain.doFilter(request, response);
     }
 
