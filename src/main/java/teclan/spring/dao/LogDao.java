@@ -11,19 +11,6 @@ import java.util.Map;
 
 @Repository
 @Mapper
-public interface LogDao {
+public interface LogDao extends Dao{
 
-    public Log findOne(@Param("id")String  id);
-
-    public Integer delete(@Param("id")String  id);
-
-    public Integer deleteBatch(@Param("ids")String[]  ids);
-
-    public Integer create(Log log);
-
-    public Integer update(Log log);
-
-    public List<Log> query(Map<String,Object> parameter);
-
-    public Integer countQuery(Map<String,Object> parameter);
 }

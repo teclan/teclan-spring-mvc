@@ -42,7 +42,7 @@
         <include refid="queryWhere"></include>
     </select>
 
-    <select id="findOne" resultType="teclan.spring.model.Log" parameterType="java.lang.Integer">
+    <select id="findOne" resultType="teclan.spring.model.Log" parameterType="java.lang.String">
         select *  from log
         where
             id=#{id}
