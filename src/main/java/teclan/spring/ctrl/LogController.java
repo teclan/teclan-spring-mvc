@@ -40,4 +40,28 @@ public class LogController {
             return ResultUtil.get(500, "查询失败",e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject delete(HttpServletRequest request, HttpServletResponse response,Integer id) {
+        try {
+            int row = logDao.delete(id);
+            return ResultUtil.get(200, row>0?"删除成功":"删除失败","受影响行数:"+row);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(500, "删除失败",e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/deleteBatch",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject delete(HttpServletRequest request, HttpServletResponse response,String ids) {
+        try {
+            int row = logDao.deleteBatch(ids.split(","));
+            return ResultUtil.get(200, row>0?"删除成功":"删除失败","受影响行数:"+row);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultUtil.get(500, "删除失败",e.getMessage());
+        }
+    }
 }

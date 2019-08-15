@@ -8,4 +8,16 @@
         where
             id=#{id}
     </select>
+
+    <delete id="delete"  parameterType="java.lang.Integer">
+        delete from log where id=#{id}
+    </delete>
+
+    <delete id="deleteBatch" >
+        delete from log where id in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

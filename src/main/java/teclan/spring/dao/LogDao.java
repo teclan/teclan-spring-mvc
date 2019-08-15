@@ -11,5 +11,8 @@ public interface LogDao {
 
     public Log findOne(@Param("id")Integer  id);
 
+    public Integer delete(@Param("id")Integer  id);
+
+    public Integer deleteBatch(@Param("ids")String[]  ids);
 
 }
