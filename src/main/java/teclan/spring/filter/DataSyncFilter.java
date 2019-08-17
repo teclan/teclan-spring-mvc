@@ -66,20 +66,20 @@ public class DataSyncFilter implements Filter {
             request = new BodyReaderHttpServletRequestWrapper(
                     (HttpServletRequest) servletRequest);
 
-            if ("application/json".equalsIgnoreCase(request.getContentType())) {
-                para = HttpTool.readJSONParam(request);
-            } else {
-                Set<String> parameters = request.getParameterMap().keySet();
-                List<String> query = new ArrayList<>();
-                Iterator<String> iterator = parameters.iterator();
-                while (iterator.hasNext()) {
-                    String m = iterator.next();
-                    query.add(String.format("%s=%s", m, request.getParameter(m)));
-                }
-                para = Objects.Joiner("&", query);
-            }
+//            if ("application/json".equalsIgnoreCase(request.getContentType())) {
+//                para = HttpTool.readJSONParam(request);
+//            } else {
+//                Set<String> parameters = request.getParameterMap().keySet();
+//                List<String> query = new ArrayList<>();
+//                Iterator<String> iterator = parameters.iterator();
+//                while (iterator.hasNext()) {
+//                    String m = iterator.next();
+//                    query.add(String.format("%s=%s", m, request.getParameter(m)));
+//                }
+//                para = Objects.Joiner("&", query);
+//            }
         }
-        new Thread(new ProcessFilter(request.getSession().getId(),requestURI,para)).start();
+//        new Thread(new ProcessFilter(request.getSession().getId(),requestURI,para)).start();
         filterChain.doFilter(request, response);
     }
 

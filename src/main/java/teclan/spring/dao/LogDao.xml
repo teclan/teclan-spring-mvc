@@ -13,6 +13,9 @@
         <if test="url!=null">
             and `url` like CONCAT('%', #{url}, '%')
         </if>
+        <if test="header!=null">
+            and `header` like CONCAT('%', #{header}, '%')
+        </if>
         <if test="parameter!=null">
             and `parameter` like CONCAT('%', #{parameter}, '%')
         </if>
@@ -61,8 +64,8 @@
     </delete>
 
     <insert id="create" parameterType="teclan.spring.model.Log">
-        insert into log (`id`,`session_id`,`url`,`parameter`,`status`,`result`,`created_at`)
-        values (#{id},#{sessionId},#{url},#{parameter},#{status},#{result},#{createdAt});
+        insert into log (`id`,`session_id`,`url`,`header`,`parameter`,`status`,`result`,`created_at`)
+        values (#{id},#{sessionId},#{url},#{header},#{parameter},#{status},#{result},#{createdAt});
     </insert>
 
     <insert id="update" parameterType="teclan.spring.model.Log">
@@ -74,6 +77,9 @@
 
         <if test="url!=null">
             `url`=#{url},
+        </if>
+        <if test="header!=null">
+            `header`=#{header},
         </if>
         <if test="parameter!=null">
             `parameter`=#{parameter},

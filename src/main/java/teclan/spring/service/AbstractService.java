@@ -17,10 +17,7 @@ import java.util.List;
 public abstract class AbstractService implements Service {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractService.class);
 
-
     protected abstract Dao getDao();
-
-    protected abstract Class getModelClass();
 
     @Override
     public JSONObject findOne(String id) {
@@ -57,24 +54,9 @@ public abstract class AbstractService implements Service {
 
     @Override
     public JSONObject create(HttpServletRequest request) {
-        return create(request, getModelClass());
-    }
-
-    @Override
-    public JSONObject update(HttpServletRequest request) {
-        return update(request, getModelClass());
-    }
-
-    @Override
-    public JSONObject query(HttpServletRequest request) {
-        return query(request, getModelClass());
-    }
-
-    private JSONObject create(HttpServletRequest request, Class<? extends Model> model) {
         try {
-            String json = HttpTool.readJSONString(request);
-            Log log = JSON.parseObject(json, Log.class);
-            int row = getDao().create(log);
+            JSONObject json = HttpTool.readJSONParam(request);
+            int row = getDao().create(json);
             return ResultUtil.get(200, row > 0 ? "创建成功" : "创建失败", "受影响行数:" + row);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -82,11 +64,11 @@ public abstract class AbstractService implements Service {
         }
     }
 
-    private JSONObject update(HttpServletRequest request, Class<? extends Model> model) {
+    @Override
+    public JSONObject update(HttpServletRequest request) {
         try {
-            String json = HttpTool.readJSONString(request);
-            Log log = JSON.parseObject(json, Log.class);
-            int row = getDao().update(log);
+            JSONObject json = HttpTool.readJSONParam(request);
+            int row = getDao().update(json);
             return ResultUtil.get(200, row > 0 ? "更新成功" : "更新失败", "受影响行数:" + row);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -94,7 +76,8 @@ public abstract class AbstractService implements Service {
         }
     }
 
-    public JSONObject query(HttpServletRequest request,Class<? extends Model> model) {
+    @Override
+    public JSONObject query(HttpServletRequest request) {
         try {
             JSONObject jsonObject = HttpTool.readJSONParam(request);
 

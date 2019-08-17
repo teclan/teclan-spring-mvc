@@ -6,8 +6,12 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import javax.xml.ws.ResponseWrapper;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -67,7 +71,9 @@ public class HttpTool {
             return JSONObject.parseObject(json.toString());
         }
     }
-	
+
+
+
 	public static ResponseEntity<String> GetResponseEntity(String result) {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		MediaType mediaType = new MediaType("text", "html", Charset.forName("UTF-8"));
@@ -153,7 +159,6 @@ public class HttpTool {
 		out .write(content.toJSONString().getBytes());
 		out .flush();
 		out .close();
-
-
 	}
+
 }

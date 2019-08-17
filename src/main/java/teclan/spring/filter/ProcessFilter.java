@@ -36,6 +36,5 @@ public class ProcessFilter implements Runnable {
 			LOGGER.info(String.format("监测到会话：%s, URL=%s,参数:%s",sessionId,requestUrl,requestParams.toString()));
 		}
 
-		Log log = new Log(sessionId,requestUrl,requestParams);
 	}
 }

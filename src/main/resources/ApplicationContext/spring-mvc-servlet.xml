@@ -2,9 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
 
 	<bean
@@ -46,5 +48,27 @@
 		<property name="basePackage" value="teclan.spring.dao"></property>
 		<property name="SqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
+
+	<bean id="logService" class="teclan.spring.service.LogService"/>
+
+	<!-- 系统服务组件的切面Bean -->
+	<bean id="logAspect" class="teclan.spring.aop.LogAspect"/>
+	<!-- AOP配置 -->
+	<aop:config>
+		<!-- 声明一个切面,并注入切面Bean,相当于@Aspect -->
+		<aop:aspect id="simpleAspect" ref="logAspect">
+			<!-- 配置一个切入点,相当于@Pointcut -->
+			<aop:pointcut expression="execution(* teclan.spring.ctrl..*(..))" id="simplePointcut"/>
+			<!-- 配置通知,相当于@Before、@After、@AfterReturn、@Around、@AfterThrowing -->
+			<!--
+			<aop:after pointcut-ref="simplePointcut" method="after"/>
+			<aop:after-returning pointcut-ref="simplePointcut" method="afterReturn"/>
+			<aop:after-throwing pointcut-ref="simplePointcut" method="afterThrow" throwing="ex"/>
+			<aop:before pointcut-ref="simplePointcut" method="before"/>
+			-->
+			<aop:around pointcut-ref="simplePointcut" method="around"/>
+		</aop:aspect>
+	</aop:config>
+
 
 </beans> 

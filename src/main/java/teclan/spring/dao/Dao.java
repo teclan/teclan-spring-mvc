@@ -1,5 +1,6 @@
 package teclan.spring.dao;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.annotations.Param;
 import teclan.spring.model.Log;
 import teclan.spring.model.Model;
@@ -15,9 +16,9 @@ public interface Dao {
 
     public Integer deleteBatch(@Param("ids")String[]  ids);
 
-    public Integer create(Log log);
+    public Integer create(JSONObject o);
 
-    public Integer update(Log log);
+    public Integer update(JSONObject o);
 
     public List<Object> query(Map<String,Object> parameter);
 
