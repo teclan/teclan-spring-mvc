@@ -147,7 +147,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.6.2</version>
+            <version>2.12.6.1</version>
         </dependency>
         <!-- 加这个包可以在SpringMVC从3.1转4.1的时候读取不了json数据报错的bug 结束 -->
 
