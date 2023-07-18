@@ -233,8 +233,8 @@
         </dependency>
         <!-- https://github.com/teclan/teclan-flyway -->
         <dependency>
-            <groupId>teclean.flyway</groupId>
-            <artifactId>teclean-flyway</artifactId>
+            <groupId>teclan.flyway</groupId>
+            <artifactId>teclan-flyway</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
